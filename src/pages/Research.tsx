@@ -9,6 +9,22 @@ export function Research() {
       title="Research"
       subtitle="Reliability, perception, and autonomy for underwater robots in harsh, GPS-denied environments."
     >
+      <div className="panel panel--hud" style={{ marginBottom: 18 }}>
+        <h2 className="section-title">Active research (at a glance)</h2>
+        <div className="prose">
+          <ul>
+            <li>
+              <strong>{p1.title}</strong> — learning-based sensor integrity monitoring to improve navigation robustness under
+              time-varying degradation and faults.
+            </li>
+            <li>
+              <strong>{p2.title}</strong> — low-cost 3D reconstruction using forward-scan sonar with Gaussian splatting to
+              handle sparse, elevation-ambiguous measurements.
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div className="panel">
         <h2 className="section-title">Research overview</h2>
         <div className="prose">

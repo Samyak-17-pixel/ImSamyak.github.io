@@ -9,6 +9,29 @@ export function Projects() {
       title="Projects & competition"
       subtitle="Compact modular AUV development and SAUVC 2026 with Team Aritra."
     >
+      <div className="panel panel--hud" style={{ marginBottom: 18 }}>
+        <h2 className="section-title">Flagship build</h2>
+        <div className="prose">
+          <p>
+            <strong>{a.title}</strong> — {a.overview}
+          </p>
+          <ul>
+            <li>
+              <strong>System architecture:</strong> modular frame + independent control / compute-power / comms-battery modules
+            </li>
+            <li>
+              <strong>Sensors:</strong> IMU, DVL A50, Ping2, Ping360, side-scan, pressure (USBL + camera planned)
+            </li>
+            <li>
+              <strong>Compute:</strong> Jetson Orin Nano + Pixhawk + Arduino
+            </li>
+            <li>
+              <strong>Control:</strong> depth/heading/velocity regulation with safety constraints for real missions
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div className="panel">
         <h2 className="section-title">{a.title}</h2>
         <p className="prose">{a.overview}</p>
