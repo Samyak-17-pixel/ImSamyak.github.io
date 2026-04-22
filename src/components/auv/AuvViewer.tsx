@@ -9,9 +9,15 @@ function clamp(n: number, a: number, b: number) {
 
 type Props = {
   className?: string;
+  name?: string;
+  stlPath?: string;
 };
 
-export function AuvViewer({ className }: Props) {
+export function AuvViewer({
+  className,
+  name = "DHWANI",
+  stlPath = "models/DHWANI.stl",
+}: Props) {
   const [hovered, setHovered] = useState<{ label: string; x: number; y: number } | null>(null);
 
   return (
@@ -19,12 +25,12 @@ export function AuvViewer({ className }: Props) {
       <div className="auv-viewer__top">
         <div className="auv-viewer__label-wrap">
           <span className="auv-viewer__label">
-            <span className="auv-viewer__label-text">DHWANI</span>
+            <span className="auv-viewer__label-text">{name}</span>
           </span>
         </div>
       </div>
 
-      <div className="auv-viewer__stage" aria-label="DHWANI 3D model">
+      <div className="auv-viewer__stage" aria-label={`${name} 3D model`}>
         <Canvas
           dpr={typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 2) : 1}
           camera={{ position: [0, 0.25, 4.2], fov: 42 }}
@@ -40,8 +46,8 @@ export function AuvViewer({ className }: Props) {
 
           <Bounds fit clip observe margin={1.06}>
             <DhwaniStlModel
-              url={`${import.meta.env.BASE_URL}models/DHWANI.stl`}
-              label="DHWANI"
+              url={`${import.meta.env.BASE_URL}${stlPath}`}
+              label={name}
               onHover={setHovered}
             />
           </Bounds>
