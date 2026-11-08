@@ -1666,3 +1666,14 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.next-card--highlight {
+  grid-column: 1 / -1;
+  border-color: rgba(var(--amber-rgb), 0.45);
+}
+
+.next-card__badge {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+}

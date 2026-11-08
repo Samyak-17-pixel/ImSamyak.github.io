@@ -1,10 +1,22 @@
 /** "The Next Dive": what Samyak wants to work on next, in his own words (from his statement of objectives, letters and emails). */
 export type NextLink = { label: string; to: string };
+export type Direction = { title: string; highlight?: string; text: string; buildsOn: NextLink[] };
 
 export const next = {
   lead:
-    "Every vehicle I have built so far has been tested in pools and basins. Next, I want to build underwater robots that keep working where people cannot easily go: under sea ice and in the deep ocean, where a robot cannot come up for a GPS fix and nobody can step in if something goes wrong. It has to know where it is, notice when a sensor stops giving good data, and decide for itself where to go next.",
-  directions: [
+    "Every vehicle I have built so far has been tested in pools and basins. Next, I want to build underwater robots that keep working where people cannot easily go: under sea ice in the polar oceans and in the deep sea, where a robot cannot come up for a GPS fix and nobody can step in if something goes wrong. It has to know where it is, notice when a sensor stops giving good data, and decide for itself where to go next.",
+  directions: <Direction[]>[
+    {
+      title: "Polar robotics: under the ice",
+      highlight: "What excites me most",
+      text:
+        "Under sea ice an AUV cannot surface for a GPS fix or be picked up if something goes wrong, compasses become unreliable near the poles, and the ice above keeps moving. I want to build robots that navigate under the ice, map its underside and find their way home on their own, so scientists can study one of the fastest-changing and least observed parts of the ocean.",
+      buildsOn: [
+        { label: "Active search & docking", to: "/projects/info-driven-docking" },
+        { label: "Sensor integrity paper", to: "/research/sensor-integrity-lstm" },
+        { label: "Side-scan simulator", to: "/projects/sidescan-simulator" },
+      ],
+    },
     {
       title: "Navigation a robot can trust",
       text:
@@ -17,7 +29,7 @@ export const next = {
     {
       title: "Seeing with sound",
       text:
-        "Sonar perception, mapping and 3D reconstruction in water too dark or murky for cameras, from seabed surveys to mapping the underside of sea ice, one of the hardest places for an AUV to navigate.",
+        "Sonar perception, mapping and 3D reconstruction in water too dark or murky for cameras, from seabed surveys to the structures and terrain an AUV must map to work on its own.",
       buildsOn: [
         { label: "Sonar 3D reconstruction paper", to: "/research/sonar-gaussian-splatting" },
         { label: "Side-scan simulator", to: "/projects/sidescan-simulator" },
@@ -44,7 +56,7 @@ export const next = {
       when: "From 2027",
       title: "Graduate research",
       text:
-        "An MS / PhD in marine autonomy and ocean observation, with strong foundations, time on real vehicles at sea, and mentors who have operated robots in the field.",
+        "An MS / PhD in marine autonomy and ocean observation, with a focus on polar and under-ice robotics, strong foundations, time on real vehicles at sea, and mentors who have operated robots in the field.",
     },
     {
       when: "Long term",

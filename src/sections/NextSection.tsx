@@ -27,8 +27,9 @@ export function NextSection() {
       </div>
       <Reveal className="next-grid" stagger={0.1}>
         {next.directions.map((d, i) => (
-          <GlowCard key={d.title} className="card next-card">
+          <GlowCard key={d.title} className={"card next-card" + (d.highlight ? " next-card--highlight" : "")}>
             <span className="spec-card__n">{String(i + 1).padStart(2, "0")}</span>
+            {d.highlight ? <span className="chip chip--accent next-card__badge">{d.highlight}</span> : null}
             <h3 className="next-card__title">{d.title}</h3>
             <p className="next-card__text">{d.text}</p>
             <div className="chip-row">

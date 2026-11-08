@@ -7,11 +7,11 @@ export const research = {
     "Visibility is limited or non-existent",
   ],
   themes: [
+    "Polar & under-ice robotics",
     "Sensor fault detection & reliable navigation",
     "Sonar-based perception",
     "Mapping & 3D reconstruction",
     "Information-driven search & docking",
-    "Long-endurance autonomy",
     "Simulation for underwater robotics",
   ],
 };

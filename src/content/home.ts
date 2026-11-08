@@ -2,7 +2,7 @@ export const home = {
   badge: "Marine robotics · AUVs · IIT Madras",
   title: "Samyak Kumar",
   subtitle: "Undergraduate Researcher · Marine Robotics & Ocean Observation · IIT Madras",
-  identityLine: "Autonomous Underwater Vehicles · Sensor Fusion · Acoustic Perception · Full-system Integration",
+  identityLine: "Autonomous Underwater Vehicles · Polar Robotics · Sensor Fusion · Acoustic Perception · Full-system Integration",
   lead:
     "Building intelligent, deployable AUVs for GPS-denied, uncertain oceans — from robust navigation and acoustic perception to full-stack engineering (mechanical → embedded → autonomy).",
   summary:
@@ -11,6 +11,7 @@ export const home = {
     "Navigation, estimation and sensor fault detection (IMU / DVL / pressure)",
     "Sonar-first perception for low-visibility environments",
     "Three AUVs built: torpedo docking, acoustic mapping and fully actuated research platforms",
+    "Next: robots that navigate and map under polar sea ice",
     "Two OCEANS 2026 papers: sensor integrity monitoring and forward-scan sonar 3D reconstruction",
   ],
 };
