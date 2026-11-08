@@ -1,75 +1,7 @@
-/** Decorative readouts derived from scroll progress only (0–1). */
+/** Decorative telemetry derived from dive depth + time (not real hardware). */
+import { MAX_DEPTH_M } from "@/content/sections";
 
-/** Maximum depth (m) at bottom of page — “mission” ceiling for HUD. */
-export const DEPTH_MAX_M = 36;
-
-function smoothstep(t: number) {
-  const x = Math.min(1, Math.max(0, t));
-  return x * x * (3 - 2 * x);
-}
-
-export function missionPhaseFromP(pe: number): { label: string; id: string } {
-  if (pe < 0.2) return { id: "surf", label: "SURFACE / IDLE" };
-  if (pe < 0.52) return { id: "transit", label: "DESCENT / TRANSIT" };
-  if (pe < 0.82) return { id: "survey", label: "SURVEY / MAPPING" };
-  return { id: "ascent", label: "ASCENT / RECOVERY" };
-}
-
-/** All values derive from scroll `p` ∈ [0, 1]. Depth increases 0 → DEPTH_MAX_M with eased progress. */
-export function readoutsFromProgress(p: number) {
-  const pe = smoothstep(p);
-  const depth_m = pe * DEPTH_MAX_M;
-  const s = p * Math.PI * 14;
-  const w = (f: number) => Math.sin(s * f);
-
-  const heading_deg = ((112 + w(0.35) * 85 + 360) % 360 + 360) % 360;
-  const pitch_deg = w(1.05) * 5.5;
-  const roll_deg = w(0.92) * 7;
-
-  // ~1 bar at surface + ~0.1 bar per metre (decorative, not calibrated)
-  const pressure_bar = 1.013 + depth_m * 0.1008;
-
-  // Bottom range increases with depth + small oscillation
-  const echo_range_m = Math.max(14, depth_m + 10 + w(0.9) * 4 + w(1.5) * 2);
-
-  return {
-    depth_m,
-    depth_max_m: DEPTH_MAX_M,
-    scroll_eased: pe,
-    mission_phase: missionPhaseFromP(pe),
-    heading_deg,
-    pitch_deg,
-    roll_deg,
-    imu_m_s2: {
-      ax: w(2.1) * 0.55,
-      ay: w(2.35) * 0.48,
-      az: 9.78 + w(1.4) * 0.12,
-    },
-    imu_rad_s: {
-      wx: w(3.2) * 0.045,
-      wy: w(2.9) * 0.038,
-      wz: w(2.4) * 0.022,
-    },
-    dvl_m_s: {
-      vx: w(1.15) * 0.42,
-      vy: w(0.88) * 0.31,
-      vz: w(1.55) * 0.09,
-    },
-    dvl_alt_m: 1.85 + w(0.72) * 0.55,
-    pressure_bar,
-    echo_range_m,
-    modem_dbm: -41 + w(1.65) * 14,
-    modem_pkts: Math.floor(800 + p * 2400 + w(1) * 120),
-    usbl_m: {
-      x: w(0.48) * 12,
-      y: w(0.55) * 9,
-      z: -(11.2 + w(0.38) * 3.5),
-    },
-    snr_db: 15 + w(1.18) * 11,
-    imaging_contrast: 0.35 + w(1.9) * 0.4,
-    sweep_rad: p * Math.PI * 12,
-  };
-}
+export const DEPTH_MAX_M = MAX_DEPTH_M;
 
 export function fract(n: number) {
   return n - Math.floor(n);
@@ -79,44 +11,46 @@ export function hash(a: number, r: number, seed: number) {
   return fract(Math.sin(a * 12.9898 + r * 78.233 + seed * 31.374) * 43758.5453123);
 }
 
-/** Blue → cyan → yellow (0–1). */
-export function heatRgb(t: number) {
-  const x = Math.min(1, Math.max(0, t));
-  const r = Math.min(1, x * 3);
-  const g = Math.min(1, x < 1 / 3 ? x * 3 : 1.5 - x * 1.5);
-  const b = Math.max(0, 1 - x * 2.2);
-  return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)] as const;
+/** Smooth 1D value noise in [0, 1]. */
+export function noise1(x: number, seed = 0) {
+  const i = Math.floor(x);
+  const f = x - i;
+  const u = f * f * (3 - 2 * f);
+  return hash(i, 0, seed) * (1 - u) + hash(i + 1, 0, seed) * u;
 }
 
-/** Muted sonar heat — stays close to page bg (#080c18): deep slate → cool cyan-grey. */
-export function heatRgbSonar(t: number) {
-  const x = Math.min(1, Math.max(0, t));
-  const r = Math.floor(10 + x * 38);
-  const g = Math.floor(14 + x * 52);
-  const b = Math.floor(22 + x * 68);
-  return [r, g, b] as const;
+/** Smooth 2D value noise in [0, 1]. */
+export function noise2(x: number, y: number, seed = 0) {
+  const ix = Math.floor(x);
+  const iy = Math.floor(y);
+  const fx = x - ix;
+  const fy = y - iy;
+  const ux = fx * fx * (3 - 2 * fx);
+  const uy = fy * fy * (3 - 2 * fy);
+  const a = hash(ix, iy, seed);
+  const b = hash(ix + 1, iy, seed);
+  const c = hash(ix, iy + 1, seed);
+  const d = hash(ix + 1, iy + 1, seed);
+  return a + (b - a) * ux + (c - a) * uy * (1 - ux) + (d - b) * ux * uy;
 }
 
-/** Lightweight 3×3 box blur on RGBA (in-place on non-edge pixels). */
-export function blurRgb3InPlace(data: Uint8ClampedArray, w: number, h: number) {
-  const src = new Uint8ClampedArray(data);
-  for (let y = 1; y < h - 1; y++) {
-    for (let x = 1; x < w - 1; x++) {
-      let r = 0;
-      let g = 0;
-      let b = 0;
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-          const j = ((y + dy) * w + (x + dx)) * 4;
-          r += src[j];
-          g += src[j + 1];
-          b += src[j + 2];
-        }
-      }
-      const i = (y * w + x) * 4;
-      data[i] = r / 9;
-      data[i + 1] = g / 9;
-      data[i + 2] = b / 9;
-    }
-  }
+/** Live-looking readouts for every sensor at a given depth. */
+export function telemetry(depth_m: number, t: number) {
+  const w = (f: number, ph = 0) => Math.sin(t * f + ph);
+  return {
+    depth_m,
+    pressure_bar: 1.013 + depth_m * 0.1005,
+    heading_deg: (((112 + w(0.05) * 60 + depth_m * 0.08) % 360) + 360) % 360,
+    pitch_deg: w(0.6) * 2.5,
+    roll_deg: w(0.45, 1) * 3.5,
+    gyro_z: w(0.9) * 0.02,
+    dvl_vx: 0.85 + w(0.3) * 0.12,
+    dvl_alt_m: 4.2 + w(0.21) * 1.1,
+    usbl_range_m: 12 + depth_m * 1.02 + w(0.4) * 0.6,
+    fls_range_m: 18 + w(0.33) * 6,
+    img_snr_db: 18 + w(0.7) * 5,
+    sss_swath_m: 60 + w(0.2) * 4,
+    xpdr_count: 4,
+    modem_bps: Math.round(480 + w(0.5) * 40),
+  };
 }

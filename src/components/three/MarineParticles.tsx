@@ -3,17 +3,16 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { MutableRefObject } from "react";
 
-type Intensity = "hero" | "ambient";
-
 type Props = {
-  intensity: Intensity;
+  count: number;
   mouseRef: MutableRefObject<THREE.Vector2>;
+  /** Scroll velocity (px/ms); scrolling down makes particles stream upward. */
+  velocityRef: MutableRefObject<number>;
 };
 
-/** Fine suspended matter + micro-life — drifts with subtle current + mouse. */
-export function MarineParticles({ intensity, mouseRef }: Props) {
+/** Marine snow — drifts with a slight current and streams past while the page descends. */
+export function MarineParticles({ count, mouseRef, velocityRef }: Props) {
   const ref = useRef<THREE.Points>(null);
-  const count = intensity === "hero" ? 5200 : 3200;
   const { positions, phases } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const phases = new Float32Array(count);
@@ -26,28 +25,26 @@ export function MarineParticles({ intensity, mouseRef }: Props) {
     return { positions, phases };
   }, [count]);
 
-  const tmp = useMemo(() => new THREE.Vector3(), []);
-
   useFrame((state) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
     const mx = mouseRef.current.x;
     const my = mouseRef.current.y;
+    const rise = Math.max(-0.6, Math.min(0.6, velocityRef.current * 0.12));
     const arr = ref.current.geometry.attributes.position.array as Float32Array;
     for (let i = 0; i < count; i++) {
       const ix = i * 3;
       const ph = phases[i];
-      tmp.set(arr[ix], arr[ix + 1], arr[ix + 2]);
-      tmp.x += Math.sin(t * 0.12 + ph + my * 2) * 0.02 + mx * 0.035;
-      tmp.y += Math.cos(t * 0.1 + ph * 0.7) * 0.015;
-      tmp.z += Math.sin(t * 0.11 + ph * 0.5 + mx) * 0.018;
-      if (tmp.x > 26) tmp.x = -26;
-      if (tmp.x < -26) tmp.x = 26;
-      if (tmp.y > 18) tmp.y = -18;
-      if (tmp.y < -18) tmp.y = 18;
-      arr[ix] = tmp.x;
-      arr[ix + 1] = tmp.y;
-      arr[ix + 2] = tmp.z;
+      let x = arr[ix] + Math.sin(t * 0.12 + ph + my * 2) * 0.02 + mx * 0.03;
+      let y = arr[ix + 1] + Math.cos(t * 0.1 + ph * 0.7) * 0.012 - 0.004 + rise * (0.6 + (ph % 1));
+      const z = arr[ix + 2] + Math.sin(t * 0.11 + ph * 0.5 + mx) * 0.016;
+      if (x > 26) x = -26;
+      if (x < -26) x = 26;
+      if (y > 18) y = -18;
+      if (y < -18) y = 18;
+      arr[ix] = x;
+      arr[ix + 1] = y;
+      arr[ix + 2] = z;
     }
     ref.current.geometry.attributes.position.needsUpdate = true;
     ref.current.rotation.y = t * 0.006 + mx * 0.04;
@@ -59,10 +56,10 @@ export function MarineParticles({ intensity, mouseRef }: Props) {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={intensity === "hero" ? 0.028 : 0.022}
-        color="#93c5fd"
+        size={0.026}
+        color="#a7f3e4"
         transparent
-        opacity={0.4}
+        opacity={0.38}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}

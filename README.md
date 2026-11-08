@@ -1,53 +1,64 @@
 # Samyak Kumar — Portfolio Website
 
-A personal portfolio site for **marine robotics**, **autonomous underwater vehicles (AUVs)**, and **underwater autonomy** research. It features a **React** + **TypeScript** UI, **React Router** with multiple sections, a **Three.js** (@react-three/fiber) underwater background, scroll-driven **sensor-style HUD** widgets, and **GitHub Actions** deployment to **GitHub Pages**.
+A personal portfolio for **marine robotics**, **autonomous underwater vehicles (AUVs)** and **underwater autonomy** research, built as one continuous **dive**: scrolling descends from the surface (0 m) to the abyss (1000 m). Each section is presented through one of the underwater sensors Samyak has worked with.
 
-**Live site (after deployment):**  
-`https://samyak-17-pixel.github.io/Website/`  
-(Hash-based routes, e.g. `.../Website/#/about`.)
+**Live site:** `https://samyak-17-pixel.github.io/Website/` (hash routes, e.g. `.../Website/#/research`)
 
 ---
 
 ## Table of contents
 
-1. [Features](#features)  
-2. [Tech stack](#tech-stack)  
-3. [Prerequisites](#prerequisites)  
-4. [Getting started](#getting-started)  
-5. [Scripts](#scripts)  
-6. [Project structure](#project-structure)  
-7. [Configuration notes](#configuration-notes)  
-8. [Deploying to GitHub Pages](#deploying-to-github-pages)  
-9. [Troubleshooting](#troubleshooting)  
-10. [License & attribution](#license--attribution)
+1. [The dive](#the-dive)
+2. [Features](#features)
+3. [Tech stack](#tech-stack)
+4. [Getting started](#getting-started)
+5. [Scripts](#scripts)
+6. [Project structure](#project-structure)
+7. [Editing content](#editing-content)
+8. [Configuration notes](#configuration-notes)
+9. [Deploying to GitHub Pages](#deploying-to-github-pages)
+10. [Troubleshooting](#troubleshooting)
+11. [License & attribution](#license--attribution)
+
+---
+
+## The dive
+
+| Depth | Section | Sensor | What it does |
+|------:|---------|--------|--------------|
+| 0 m | Surface (hero) | Underwater GPS (USBL) | Reticle acquires a position fix over IIT Madras |
+| 20 m | About | IMU | Attitude indicator follows the cursor and scroll speed |
+| 45 m | Telemetry | Depth sensor | Live depth/pressure column + rolling counters |
+| 80 m | AUV fleet | Imaging sonar | 3D models revealed inside a sonar fan |
+| 150 m | Research | Forward-scan sonar | Elevation-ambiguous arcs accumulate into a structure |
+| 250 m | Projects | DVL | Four-beam bottom lock over scrolling terrain |
+| 400 m | Experience | Side-scan sonar | Copper waterfall spine; each role is a "contact" |
+| 600 m | Skills | Acoustic transponders | LBL ping network; hovering a card lights its beacon |
+| 800 m | Education | IMU + DVL | Dead-reckoning track; each fix collapses its uncertainty |
+| 1000 m | Contact | Acoustic modem | FSK waveform transmitting a real bitstream |
+
+The section list, depths and sensors live in **`src/content/sections.ts`**. Everything that navigates (top nav, depth gauge, instrument rail, command palette) reads from it.
 
 ---
 
 ## Features
 
-### Content & navigation
+### Navigation
+- **Single long-scroll page** with **shareable deep links**: `#/research` opens the dive at that section, and the URL follows you as you scroll.
+- **Top nav** (sliding active pill, mobile drawer), **depth gauge** on the left (click a marker to dive there), **instrument rail** on the right (all nine sensors, with the active one lit and showing live readouts).
+- **Command palette:** <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> to jump to sections, papers, AUVs or contact links.
+- **Detail pages:** `#/research/<slug>` (paper breakdown with sticky table of contents and methodology pipeline) and `#/models/<slug>` (orbitable 3D viewer with hull/sonar render modes and spec sheet).
 
-- **Separate routes** for each major section: Home, About, Research, Projects, Experience, Skills, Education, Contact.
-- **Full content** for academic profile: research papers (summaries), compact AUV project, SAUVC, work experience, skills, education, awards, leadership, contact links, and CV download.
-- **Scroll-to-top** on route change so each section starts at the top of the page.
+### Visuals & motion
+- **Depth-reactive three.js background:** light shafts and caustics fade as you descend; bioluminescent plankton appears in the deep; marine snow streams upward while you scroll; the seafloor rises into view at the bottom.
+- **GSAP ScrollTrigger + Lenis** smooth scrolling: split-letter titles, scrubbed text, sonar-sweep reveals, rolling odometers.
+- **Sonar-reticle cursor**, click ripples, a first-visit **"system boot" intro** (once per session, skippable), and a sonar-ping route transition.
 
-### Visual & interaction
-
-- **Three.js background** (`MarineScene`): particles, kelp-like strands, bubbles, sonar-style rings, sweep, horizontal AUV-inspired hull, fog, and lighting tuned for an underwater / “abyss lab” look.
-- **Custom GLSL-style backdrop** (`UnderwaterBackdrop`) with caustic-like noise and **mouse-reactive** local water distortion (pointer tracked from `window` so UI stays clickable).
-- **Click ripples** (`WaterRippleOverlay`) for a water-drop effect on document click.
-- **Framer Motion** for page transitions and nav entrance.
-
-### Sensor HUD (decorative)
-
-- Values are **driven by scroll position** (not real hardware): depth increases **0 → `DEPTH_MAX_M` m** (eased) as you scroll down the page; mission phase label updates with scroll.
-- **Canvas widgets**: polar “scanning” view, A-scan, imaging patch, side-scan strip, echosounder strip chart; **muted** colors aligned with the dark UI.
-- **Read-only / decorative**: `aria-hidden` on HUD; does not replace real instrumentation.
-
-### Build & deploy
-
-- **Vite** for fast dev and optimized production builds.
-- **GitHub Actions** workflow (`.github/workflows/deploy.yml`) builds with `npm ci` / `npm run build` and publishes the **`dist`** folder to **GitHub Pages**.
+### Performance & accessibility
+- **Adaptive quality** (`src/lib/quality.ts`): particle counts and DPR scale down on phones and low-power devices.
+- **`prefers-reduced-motion`** turns off smooth scroll, the intro and the cursor; scroll animations are skipped and canvases render a single still frame.
+- Sensor canvases only animate while on screen. 3D models and detail pages are lazy-loaded.
+- 3D models are **Draco-compressed GLB** (~0.5 MB each, down from 58–86 MB STL).
 
 ---
 
@@ -57,65 +68,26 @@ A personal portfolio site for **marine robotics**, **autonomous underwater vehic
 |------|------------|
 | UI | React 18, TypeScript |
 | Bundler | Vite 6 |
-| Routing | React Router 6 (**HashRouter** — reliable on static GitHub Pages without server rewrite rules) |
+| Routing | React Router 6 (**HashRouter** for static GitHub Pages) |
 | 3D | three.js, @react-three/fiber, @react-three/drei |
-| Motion | framer-motion |
-| Styling | Global CSS (design tokens, responsive HUD) |
+| Motion | GSAP + ScrollTrigger, Lenis, framer-motion |
+| Styling | Plain CSS with design tokens (`src/styles/`) |
+| Model pipeline | glTF-Transform + meshoptimizer + Draco (`scripts/stl-to-glb.mjs`) |
 
-Path alias: `@/` → `src/` (see `vite.config.ts`).
-
----
-
-## Prerequisites
-
-- **Node.js** 18+ (20+ recommended; GitHub Actions uses Node 20).
-- **npm** (comes with Node).
-
-Check versions:
-
-```bash
-node -v
-npm -v
-```
+Path alias: `@/` → `src/`.
 
 ---
 
 ## Getting started
 
-### Clone the repository
-
 ```bash
 git clone https://github.com/Samyak-17-pixel/Website.git
 cd Website
-```
-
-### Install dependencies
-
-```bash
 npm install
-```
-
-### Run the development server
-
-```bash
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`). Edit files under `src/`; the app hot-reloads.
-
-### Production build (local check)
-
-```bash
-npm run build
-```
-
-Output is written to **`dist/`**.
-
-### Preview the production build locally
-
-```bash
-npm run preview
-```
+Open the URL Vite prints (usually `http://localhost:5173`).
 
 ---
 
@@ -123,87 +95,70 @@ npm run preview
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start Vite dev server |
-| `npm run build` | Type-check (via Vite) and emit production assets to `dist/` |
-| `npm run preview` | Serve `dist/` locally for smoke-testing |
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Emit production assets to `dist/` |
+| `npm run preview` | Serve `dist/` locally |
+| `npm run models -- <in.stl> <out.glb> [ratio]` | Convert a binary STL to a simplified, Draco-compressed GLB (`ratio` = fraction of triangles kept, default 0.12) |
+
+Example: `npm run models -- ~/cad/TIMI.stl public/models/timi.glb 0.18`
 
 ---
 
 ## Project structure
 
 ```
-Website/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Pages: build + deploy dist/
-├── public/
-│   └── Samyak_CV.pdf           # CV linked from Contact (add/replace as needed)
-├── src/
-│   ├── components/
-│   │   ├── effects/            # e.g. WaterRippleOverlay
-│   │   ├── hud/                # Sensor HUD, canvases, sensorMath
-│   │   ├── layout/             # MainLayout, Nav
-│   │   ├── three/              # MarineScene, shaders, bubbles, etc.
-│   │   └── ui/                 # PageShell, etc.
-│   ├── content/                # Structured copy (about, research, …)
-│   ├── hooks/                  # useScrollProgressRaf, etc.
-│   ├── pages/                  # Route-level page components
-│   ├── styles/
-│   │   └── global.css
-│   ├── App.tsx                 # Routes
-│   └── main.tsx
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── README.md
+src/
+├── App.tsx                    # Routes: dive, /:section, /research/:slug, /models/:slug
+├── content/                   # All copy, plus sections.ts (dive registry), auvs.ts, stats.ts
+├── sections/                  # One component per dive section
+├── pages/                     # DivePage + detail pages
+├── components/
+│   ├── sensors/               # Animated sensor canvases + icons
+│   ├── hud/                   # Depth gauge, instrument rail, mobile depth pill, telemetry math
+│   ├── auv/                   # GLB model + viewer
+│   ├── three/                 # Background scene (backdrop shader, particles, bioluminescence…)
+│   ├── nav/                   # Command palette
+│   ├── effects/               # Cursor, intro, ripples, route wipe
+│   ├── layout/                # MainLayout, Nav
+│   └── ui/                    # SectionFrame, SplitTitle, Reveal, GlowCard, Odometer…
+├── lib/                       # Scroll/depth store, smooth scroll, quality tier, navigation helpers
+└── styles/                    # tokens, base, chrome, sections, detail
+public/
+├── models/                    # dhwani.glb, timi.glb, mako.glb
+├── draco/                     # Self-hosted Draco decoder
+└── Samyak_CV.pdf
+scripts/stl-to-glb.mjs         # CAD → web model converter
 ```
+
+---
+
+## Editing content
+
+- Text lives in **`src/content/*.ts`**; the components only lay it out.
+- **Add a section:** add an entry to `SECTIONS` in `src/content/sections.ts`, create a component in `src/sections/` wrapped in `SectionFrame` with the same `id`, and render it in `src/pages/DivePage.tsx`.
+- **Telemetry numbers:** `src/content/stats.ts`.
+- **AUVs:** `src/content/auvs.ts` (description, sensors, model path).
+- **Papers:** `src/content/research.ts` (`papers` normalises both papers for the cards and detail pages).
 
 ---
 
 ## Configuration notes
 
-### `vite.config.ts` — `base`
-
-- **`base: "./"`** — Relative asset paths. Works well for GitHub Pages project sites when opening `index.html` under `/Website/`.
-- If you ever see **broken CSS/JS** on Pages, try setting `base: "/Website/"` (repo name must match), then rebuild and redeploy.
-
-### Hash routing
-
-- The app uses **`HashRouter`**. URLs look like:  
-  `https://samyak-17-pixel.github.io/Website/#/contact`  
-  This avoids needing server-side fallback to `index.html` for client-side routes.
-
-### Sensor HUD depth ceiling
-
-- Maximum displayed depth (and scroll mapping) is set in **`src/components/hud/sensorMath.ts`** as **`DEPTH_MAX_M`** (meters). Adjust for narrative or display preference.
-
-### CV file
-
-- Place the PDF at **`public/Samyak_CV.pdf`** (or update the filename + link in the Contact page / `src/content/contact.ts`).
+- **`base: "./"`** in `vite.config.ts` uses relative asset paths, which suits GitHub Pages project sites. If assets 404 on Pages, try `base: "/Website/"`.
+- **Hash routing** (`#/contact`) avoids needing a server-side SPA fallback.
+- **Max depth** is `MAX_DEPTH_M` in `src/content/sections.ts`.
+- **CV:** `public/Samyak_CV.pdf` (filename set in `src/content/contact.ts`).
+- CAD sources (`*.stl`, `*.step`) are git-ignored; keep them outside the repo and convert with `npm run models`.
 
 ---
 
 ## Deploying to GitHub Pages
 
-### Repository
+1. Push `main` to GitHub.
+2. **Settings → Pages → Build and deployment → Source:** select **GitHub Actions**.
+3. The workflow `.github/workflows/deploy.yml` runs `npm ci`, `npm run build`, and deploys `dist/`.
 
-- Remote: `https://github.com/Samyak-17-pixel/Website.git`
-
-### Enable Pages with GitHub Actions
-
-1. Push the `main` (or `master`) branch to GitHub.
-2. In the repo: **Settings → Pages**.
-3. **Build and deployment → Source:** select **GitHub Actions** (not “Deploy from a branch” for this workflow).
-4. Open the **Actions** tab and confirm the workflow **Deploy to GitHub Pages** succeeds.
-
-The workflow file is **`.github/workflows/deploy.yml`**: it runs `npm ci`, `npm run build`, uploads **`dist`**, and deploys to Pages.
-
-### Published URL
-
-- **Project site:** `https://samyak-17-pixel.github.io/Website/`
-
-First deploy can take a minute after the workflow finishes.
+Published at `https://samyak-17-pixel.github.io/Website/`.
 
 ---
 
@@ -212,24 +167,22 @@ First deploy can take a minute after the workflow finishes.
 | Issue | What to try |
 |-------|-------------|
 | Blank page or 404 on assets | Set `base: "/Website/"` in `vite.config.ts`, rebuild, redeploy. |
-| Routes work locally but not on Pages | Ensure you use **hash** URLs (`#/about`), or configure hosting for SPA fallback (not required with HashRouter). |
-| Workflow fails on `npm ci` | Run `npm install` locally, commit an updated `package-lock.json`, push again. |
-| Node version errors locally | Use Node 20 LTS to match CI, or align `.nvmrc` / Volta if you add them. |
-| HUD feels heavy on old devices | Reduce canvas sizes or HUD panels in CSS / components. |
+| 3D models don't load | Check that `public/draco/` was deployed and that the GLB paths in `src/content/auvs.ts` are correct. |
+| Workflow fails on `npm ci` | Run `npm install` locally, commit the updated `package-lock.json`, push again. |
+| `npm run models` fails with a `sharp` error | Run it with Node 20+, or keep using the script as-is (it avoids the modules that need `sharp`). |
+| Scrolling feels sluggish on an old laptop | The quality tier is chosen automatically; reduce `byTier(...)` counts in `MarineScene.tsx` if needed. |
 
 ---
 
 ## License & attribution
 
-- **Content** (bio, research descriptions, CV) belongs to **Samyak Kumar**; reuse only with permission.
-- **Code** in this repository: unless you add a license file, default copyright applies — consider adding an explicit **LICENSE** (e.g. MIT) if you want open reuse.
+- **Content** (bio, research descriptions, CV, CAD models) belongs to **Samyak Kumar**; reuse only with permission.
+- **Code:** default copyright applies unless a LICENSE file is added.
 
-Built with [Vite](https://vitejs.dev/), [React](https://react.dev/), [three.js](https://threejs.org/), and [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction).
+Built with [Vite](https://vitejs.dev/), [React](https://react.dev/), [three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber), [GSAP](https://gsap.com/) and [Lenis](https://lenis.darkroom.engineering/).
 
 ---
 
 ## Author
 
 **Samyak Kumar** — Undergraduate, Naval Architecture and Ocean Engineering, IIT Madras · Marine robotics & AUVs.
-
-Contact and links are on the live **Contact** page of the site.

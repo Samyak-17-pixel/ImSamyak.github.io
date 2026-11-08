@@ -5,12 +5,13 @@ import type { MutableRefObject } from "react";
 
 type Props = {
   mouseRef: MutableRefObject<THREE.Vector2>;
+  depthRef: MutableRefObject<number>;
 };
 
 const STRANDS = 10;
 
 /** Abstract kelp / tether silhouettes — sways with time + pointer (underwater current). */
-export function KelpStrands({ mouseRef }: Props) {
+export function KelpStrands({ mouseRef, depthRef }: Props) {
   const group = useRef<THREE.Group>(null);
 
   const paths = useMemo(() => {
@@ -38,6 +39,10 @@ export function KelpStrands({ mouseRef }: Props) {
     if (!group.current) return;
     const t = state.clock.elapsedTime;
     const mx = mouseRef.current.x;
+    // The seafloor (and its kelp) rises into view over the last stretch of the dive
+    const floor = THREE.MathUtils.smoothstep(depthRef.current, 0.6, 1);
+    group.current.position.y = THREE.MathUtils.lerp(-16, 0, floor);
+    group.current.visible = floor > 0.001;
     group.current.children.forEach((child, i) => {
       const c = paths[i];
       if (!c) return;
@@ -52,8 +57,8 @@ export function KelpStrands({ mouseRef }: Props) {
         <mesh key={i} position={[0, -1.5, 0]}>
           <tubeGeometry args={[p.curve, 28, p.radius, 6, false]} />
           <meshStandardMaterial
-            color="#312e81"
-            emissive="#1e1b4b"
+            color="#0d3b3a"
+            emissive="#06302b"
             emissiveIntensity={0.35}
             metalness={0.2}
             roughness={0.88}

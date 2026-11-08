@@ -12,7 +12,7 @@ export const experience: Role[] = [
     org: "Team Aritra — IIT Madras",
     period: "Dec 2025 – Present",
     intro:
-      "Selected as part of one of the few Indian teams competing in the Singapore Autonomous Underwater Vehicle Challenge, focused on full autonomy in constrained underwater environments.",
+      "Building TIMI, a research-grade, fully actuated AUV, focused on full autonomy in constrained underwater environments.",
     sections: [
       {
         heading: "Mission-critical autonomy",

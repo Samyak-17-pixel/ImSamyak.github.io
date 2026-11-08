@@ -57,6 +57,7 @@ export const education = {
     "Underwater Robotics",
     "Acoustic Sensing",
     "Sonar-Based Perception",
+    "Marine Bioacoustics",
     "Sensor Reliability & Fault Detection",
     "Multi-Sensor Fusion",
     "AUV System Design & Integration",

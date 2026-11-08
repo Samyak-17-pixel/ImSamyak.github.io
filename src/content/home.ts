@@ -10,7 +10,7 @@ export const home = {
   highlights: [
     "Robust navigation (IMU/DVL/pressure) and EKF-based estimation",
     "Sonar-first perception for low-visibility environments",
-    "Compact modular AUV development + competition-ready autonomy",
+    "Compact modular AUV development + research-grade autonomy",
     "Research in sensor integrity monitoring and sparse-sensing 3D reconstruction",
   ],
 };

@@ -26,7 +26,7 @@ export const about = {
     },
     {
       role: "Team Captain — Team Aritra",
-      org: "SAUVC 2026 (Singapore Autonomous Underwater Vehicle Challenge)",
+      org: "TIMI research AUV, IIT Madras",
     },
     {
       role: "Research Member",

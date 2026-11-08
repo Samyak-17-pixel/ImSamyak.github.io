@@ -1,0 +1,41 @@
+:root {
+  /* Abyss palette */
+  --abyss-0: #010a0e;
+  --abyss-1: #03141a;
+  --abyss-2: #062129;
+  --abyss-3: #0a3039;
+  --glass: rgba(4, 26, 32, 0.52);
+  --glass-strong: rgba(3, 18, 24, 0.86);
+  --line: rgba(94, 242, 214, 0.13);
+  --line-strong: rgba(94, 242, 214, 0.32);
+
+  /* Bioluminescent accents */
+  --biolume: #5ef2d6;
+  --biolume-rgb: 94, 242, 214;
+  --cyan: #36c9ff;
+  --cyan-rgb: 54, 201, 255;
+  --amber: #ffb547;
+  --amber-rgb: 255, 181, 71;
+
+  --text: #e3f7f4;
+  --muted: #8fb5b3;
+  --dim: #5a8081;
+
+  --font: "DM Sans", system-ui, sans-serif;
+  --font-display: "Unbounded", "DM Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
+  --step-0: clamp(0.98rem, 0.95rem + 0.15vw, 1.06rem);
+  --step-1: clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --step-2: clamp(1.4rem, 1.2rem + 0.9vw, 1.9rem);
+  --step-3: clamp(1.8rem, 1.4rem + 1.8vw, 2.8rem);
+  --step-xl: clamp(2.6rem, 1.6rem + 5vw, 6.2rem);
+
+  --radius: 18px;
+  --radius-sm: 10px;
+  --nav-h: 64px;
+  --gutter: clamp(16px, 5vw, 64px);
+  --content: 1080px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

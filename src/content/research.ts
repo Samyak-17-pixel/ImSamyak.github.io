@@ -138,3 +138,63 @@ export const research = {
     ],
   },
 };
+
+export type PaperSection = { id: string; title: string; paragraphs: string[] };
+
+export type Paper = {
+  slug: string;
+  index: string;
+  title: string;
+  summary: string;
+  keywords: string[];
+  sections: PaperSection[];
+  pipelineTitle: string;
+  pipeline: { title: string; bullets: string[] }[];
+  contributions: string[];
+  outcomesTitle: string;
+  outcomes: string[];
+};
+
+const { paper1, paper2 } = research;
+
+/** Both papers normalised to one shape so the cards and detail pages can share a layout. */
+export const papers: Paper[] = [
+  {
+    slug: "sensor-integrity-lstm",
+    index: "01",
+    title: paper1.title,
+    summary: paper1.approach.intro,
+    keywords: ["LSTM", "EKF", "6-DOF simulation", "Fault detection"],
+    sections: [
+      { id: "problem", ...paper1.problemContext },
+      { id: "limitations", ...paper1.limitations },
+      { id: "approach", title: paper1.approach.title, paragraphs: [paper1.approach.intro] },
+    ],
+    pipelineTitle: "Framework components",
+    pipeline: paper1.approach.components.map((c) => ({ title: c.name, bullets: c.bullets })),
+    contributions: paper1.contributions,
+    outcomesTitle: "Results",
+    outcomes: paper1.results,
+  },
+  {
+    slug: "sonar-gaussian-splatting",
+    index: "02",
+    title: paper2.title,
+    summary: paper2.solution,
+    keywords: ["Forward-scan sonar", "Gaussian splatting", "Multi-view fusion", "3D reconstruction"],
+    sections: [
+      { id: "problem", ...paper2.problemContext },
+      { id: "challenge", ...paper2.challenge },
+      { id: "solution", title: "Proposed solution", paragraphs: [paper2.solution, paper2.validation] },
+    ],
+    pipelineTitle: "Methodology",
+    pipeline: paper2.methodology,
+    contributions: paper2.contributions,
+    outcomesTitle: "Impact",
+    outcomes: paper2.impact,
+  },
+];
+
+export function paperBySlug(slug: string | undefined) {
+  return papers.find((p) => p.slug === slug);
+}

@@ -3,16 +3,15 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { MutableRefObject } from "react";
 
-type Intensity = "hero" | "ambient";
-
 type Props = {
-  count?: number;
-  intensity: Intensity;
+  count: number;
   mouseRef: MutableRefObject<THREE.Vector2>;
+  depthRef: MutableRefObject<number>;
 };
 
-export function RisingBubbles({ count: countProp, intensity, mouseRef }: Props) {
-  const count = countProp ?? (intensity === "hero" ? 220 : 140);
+/** Bubbles near the surface; they thin out and vanish as the dive goes deeper. */
+export function RisingBubbles({ count, mouseRef, depthRef }: Props) {
+  const mat = useRef<THREE.MeshBasicMaterial>(null);
   const mesh = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const data = useMemo(() => {
@@ -30,7 +29,7 @@ export function RisingBubbles({ count: countProp, intensity, mouseRef }: Props) 
       );
       speed.push(0.4 + Math.random() * 1.1);
       phase.push(Math.random() * Math.PI * 2);
-      scale.push(0.04 + Math.random() * 0.09);
+      scale.push(0.015 + Math.random() * 0.04);
     }
     return { pos, speed, phase, scale };
   }, [count]);
@@ -48,6 +47,7 @@ export function RisingBubbles({ count: countProp, intensity, mouseRef }: Props) 
   }, [count, data, dummy]);
 
   useFrame((state) => {
+    if (mat.current) mat.current.opacity = 0.4 * (1 - THREE.MathUtils.smoothstep(depthRef.current, 0.05, 0.35));
     if (!mesh.current) return;
     const t = state.clock.elapsedTime;
     const mx = mouseRef.current.x;
@@ -77,7 +77,8 @@ export function RisingBubbles({ count: countProp, intensity, mouseRef }: Props) 
     <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 10, 10]} />
       <meshBasicMaterial
-        color="#bae6fd"
+        ref={mat}
+        color="#c9fbf1"
         transparent
         opacity={0.46}
         depthWrite={false}
