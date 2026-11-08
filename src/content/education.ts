@@ -6,7 +6,9 @@ export const education = {
   },
   coursework: [
     "Marine Robotics",
+    "Guidance & Control of Marine Vehicles",
     "Marine Instrumentation",
+    "Machine Learning for Ocean Engineers",
     "Maneuvering and Control of Marine Vehicles",
     "Ship Hydrodynamics",
     "Vibration of Marine Structures",
@@ -17,40 +19,52 @@ export const education = {
     {
       title: "MTS Dieter Family Scholarship (2025)",
       detail:
-        "Awarded by the Marine Technology Society for academic excellence and contribution to marine technology initiatives.",
+        "US$1,500, awarded by the Marine Technology Society for academic excellence and contributions to marine technology initiatives.",
+    },
+    {
+      title: "IEEE OES Summer School 2026 — Sanya, China",
+      detail: "Selected participant; summer school on marine robotics, autonomy and ocean technology.",
     },
   ],
   conferences: [
     {
-      title: "OCEANS Conference — Great Lakes, Chicago",
+      title: "OCEANS 2026 — Sanya, China",
       detail:
-        "Presented student initiatives; interacted with global AUV researchers and industry experts; exposure to cutting-edge marine robotics research.",
+        "Presenter. First-author paper on deep-learning sensor integrity monitoring for AUV navigation, and co-author of a paper on forward-scan sonar 3D reconstruction with Gaussian splatting.",
+    },
+    {
+      title: "OCEANS 2025 — Great Lakes, Chicago, USA",
+      detail: "Attendee; met AUV researchers and industry engineers from around the world.",
     },
     {
       title: "ICOE 2025 — Chennai",
       detail:
-        "Attended technical sessions on marine hydrodynamics, ocean observation systems, and underwater robotics.",
+        "Attendee; technical sessions on marine hydrodynamics, ocean observation systems and underwater robotics.",
     },
   ],
   leadership: [
     {
-      role: "Joint Secretary",
-      org: "Marine Technology Society (MTS), IIT Madras",
+      role: "Game Master, Aquavision AUV Competition",
+      org: "IEEE OES IIT Madras Student Chapter (2025 – Present)",
       detail:
-        "Organized Techsym 2025; led Aquavision AUV competition; managed collaborations with NIOT and IEEE OES.",
+        "Led the design and running of two editions of Aquavision, writing the tasks, technical rules and evaluation criteria modelled on real underwater robotics challenges; built an AUV from scratch in one week with students of the research group to test the arena.",
+    },
+    {
+      role: "Joint Secretary",
+      org: "Marine Technology Society (MTS) IIT Madras Student Section (2024 – 2025)",
+      detail:
+        "Directed technical events, workshops and outreach, organised Techsym 2025 for students, researchers, industry and government, and managed collaborations with NIOT and IEEE OES.",
     },
     {
       role: "Student Ambassador",
-      org: "Royal Institute of Naval Architects (RINA)",
-      detail:
-        "Represent IIT Madras in a global professional network; promote marine engineering and naval architecture initiatives.",
+      org: "Royal Institution of Naval Architects (RINA) (2024 – 2025)",
+      detail: "Represented IIT Madras in the RINA international network.",
     },
   ],
   events: [
     {
       title: "Techsym 2025 — IIT Madras",
-      detail:
-        "Organized flagship MTS event; managed logistics for 100+ participants; coordinated national AUV competition.",
+      detail: "Organised the flagship MTS IIT Madras event and managed logistics for 100+ participants.",
     },
   ],
   researchInterests: [
@@ -60,6 +74,9 @@ export const education = {
     "Marine Bioacoustics",
     "Sensor Reliability & Fault Detection",
     "Multi-Sensor Fusion",
+    "Mapping & 3D Reconstruction",
+    "Information-Driven Search & Docking",
+    "Polar & Under-Ice Exploration",
     "AUV System Design & Integration",
   ],
 };

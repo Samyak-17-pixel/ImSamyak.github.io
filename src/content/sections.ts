@@ -61,6 +61,7 @@ export const SECTIONS: Section[] = [
   { id: "experience", label: "Experience", depthM: 400, sensors: ["sidescan"], inNav: true, zone: "Twilight zone" },
   { id: "skills", label: "Skills", depthM: 600, sensors: ["transponder"], inNav: true, zone: "Twilight zone" },
   { id: "education", label: "Education", depthM: 800, sensors: ["imu", "dvl"], inNav: true, zone: "Midnight zone" },
+  { id: "next", label: "Next Dive", depthM: 900, sensors: ["usbl"], inNav: true, zone: "Midnight zone" },
   { id: "contact", label: "Contact", depthM: 1000, sensors: ["modem"], inNav: true, zone: "Abyss" },
 ];
 

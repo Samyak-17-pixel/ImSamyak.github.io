@@ -5,13 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { GlowCard } from "@/components/ui/GlowCard";
 import { TransponderNet } from "@/components/sensors/TransponderNet";
 
-const stacks = [
-  { label: "Programming", items: skills.programming },
-  { label: "Robotics", items: skills.robotics },
-  { label: "AI / ML", items: skills.ai },
-  { label: "Simulation", items: skills.simulation },
-  { label: "Hardware", items: skills.hardware },
-];
+const stacks = skills.groups;
 
 export function SkillsSection() {
   const [active, setActive] = useState(-1);

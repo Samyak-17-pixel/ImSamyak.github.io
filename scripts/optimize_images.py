@@ -75,7 +75,9 @@ IMAGES = {
         (GNC / "f01_open_loop.png", "open-loop"),
     ],
     "sidescan-simulator": [
-        (SSS / "07_ui/console.png", "console"),
+        # Same console image as the portfolio (rough-floor run).
+        (HOME / "Documents/CV and Resume/portfolio_build/sss_ui/sss_console_run.png", "console"),
+        (SSS / "07_ui/geometry.png", "geometry"),
         (SSS / "01_overview/01_pipeline_poster.png", "pipeline"),
         (SSS / "01_overview/02_sonar_model_diagram.png", "model-diagram"),
         (SSS / "04_shadows/02_shadow_diagram.png", "shadow-geometry"),
@@ -86,14 +88,21 @@ IMAGES = {
         (SSS / "07_ui/scene.png", "scene"),
     ],
     "underwater-segmentation": [
+        # Older k-means study figures (sources since reorganised in the repo; webp kept in public/).
         (SEG_DOC / "stride3_usod_test54.png", "example"),
         (SEG_DOC / "analysis/gallery_best.png", "gallery-best"),
-        (SEG_DOC / "analysis/gallery_median.png", "gallery-median"),
-        (SEG_DOC / "analysis/failure_breakdown.png", "failure-breakdown"),
-        (SEG_DOC / "analysis/oracle_vs_k.png", "oracle-vs-k"),
-        (SEG_DOC / "analysis/oracle_vs_border.png", "oracle-vs-border"),
         (SEG / "usod_test104.png", "panel-1"),
-        (SEG / "usod_test108.png", "panel-3"),
+        # Current README figures.
+        (SEG_DOC / "01_overview.png", "overview"),
+        (SEG_DOC / "02_pca_rgb_stride14_vs_3.png", "pca-rgb"),
+        (SEG_DOC / "a2_oracle_vs_border_rule.png", "oracle-vs-border"),
+        (SEG_DOC / "11_compare_unsupervised.png", "compare-unsupervised"),
+        (SEG_DOC / "07_supervised_pipeline.png", "supervised-pipeline"),
+        (SEG_DOC / "14_bars_supervised.png", "supervised-bars"),
+        (SEG_DOC / "12_compare_supervised.png", "compare-supervised"),
+        (SEG_DOC / "15_cross_dataset.png", "cross-dataset"),
+        (SEG_DOC / "16_tank_results.png", "tank-results"),
+        (SEG_DOC / "20_dhwani_supervised.png", "tank-supervised"),
     ],
     "fin-design": [
         (SHOTS / "Screenshot from 2026-08-25 02-06-43.png", "gui"),
@@ -125,8 +134,12 @@ def save(src: Path, dest: Path, width: int, quality: int) -> int:
 
 
 def main() -> None:
+    import sys
+    only = set(sys.argv[1:])  # optional: slugs to process
     total = 0
     for slug, items in IMAGES.items():
+        if only and slug not in only:
+            continue
         for src, name in items:
             if not src.exists():
                 print(f"MISSING {src}")

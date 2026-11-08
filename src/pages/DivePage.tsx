@@ -10,6 +10,7 @@ import { ProjectsSection } from "@/sections/ProjectsSection";
 import { ExperienceSection } from "@/sections/ExperienceSection";
 import { SkillsSection } from "@/sections/SkillsSection";
 import { EducationSection } from "@/sections/EducationSection";
+import { NextSection } from "@/sections/NextSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { startScrollTracking, useActiveSection } from "@/lib/scrollStore";
 import { replaceSectionHash } from "@/lib/navigation";
@@ -57,6 +58,7 @@ export function DivePage() {
       <ExperienceSection />
       <SkillsSection />
       <EducationSection />
+      <NextSection />
       <ContactSection />
     </div>
   );

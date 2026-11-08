@@ -1,150 +1,33 @@
 export const research = {
   overview:
-    "My research focuses on improving reliability, perception, and autonomy in underwater robotic systems, particularly in environments where:",
+    "My research is about making underwater robots reliable and perceptive where the ocean is hardest to observe, in water where:",
   environmentBullets: [
     "GPS is unavailable",
-    "Sensors degrade over time",
+    "Sensors degrade or fail mid-mission",
     "Visibility is limited or non-existent",
   ],
   themes: [
-    "Sensor Integrity & Reliability Estimation",
-    "Learning-Enhanced State Estimation",
-    "Underwater SLAM & Localization",
-    "Acoustic Perception & Sonar-Based Mapping",
-    "3D Reconstruction in Sparse Sensing Environments",
-    "Simulation-to-Real Transfer",
+    "Sensor fault detection & reliable navigation",
+    "Sonar-based perception",
+    "Mapping & 3D reconstruction",
+    "Information-driven search & docking",
+    "Long-endurance autonomy",
+    "Simulation for underwater robotics",
   ],
-  paper1: {
-    title: "Deep Learning Based Sensor Integrity Monitoring for Robust AUV Navigation",
-    problemContext: {
-      title: "Problem context",
-      paragraphs: [
-        "Autonomous Underwater Vehicles (AUVs) rely on onboard sensors such as IMU (Inertial Measurement Unit), Doppler Velocity Log (DVL), and pressure sensors for navigation in GPS-denied underwater environments.",
-        "However, in real-world deployments: sensors degrade over time, noise characteristics change, and sudden faults occur. This leads to significant degradation in state estimation accuracy.",
-      ],
-    },
-    limitations: {
-      title: "Limitations of conventional methods",
-      paragraphs: [
-        "Traditional approaches using the Extended Kalman Filter assume fixed process noise (Q) and fixed measurement noise (R).",
-        "These assumptions fail under time-varying sensor conditions, cannot detect subtle degradation patterns, and struggle with transient faults.",
-      ],
-    },
-    approach: {
-      title: "Proposed approach",
-      intro:
-        "This work introduces a learning-based sensor integrity monitoring framework integrated with classical estimation pipelines.",
-      components: [
-        {
-          name: "Simulation pipeline",
-          bullets: [
-            "Based on 6-DOF vehicle dynamics",
-            "Generates mission-level trajectories",
-            "Injects gradual degradation, sudden faults, and noise variations",
-          ],
-        },
-        {
-          name: "Temporal learning model",
-          bullets: [
-            "LSTM-based architecture",
-            "Input: time-series sensor data",
-            "Output: sensor state classification — Clean, Degraded, Faulty",
-          ],
-        },
-        {
-          name: "Scenario-based evaluation framework",
-          bullets: [
-            "Moves beyond point-wise accuracy",
-            "Groups predictions into mission-level patterns",
-            "Evaluates detection stability, temporal consistency, false positives/negatives",
-          ],
-        },
-      ],
-    },
-    contributions: [
-      "Introduces learning-based sensor health estimation for AUVs",
-      "Demonstrates improved detection of short-term degradation events",
-      "Provides stable and interpretable sensor behavior tracking",
-      "Bridges model-based estimation (EKF) with data-driven intelligence",
-    ],
-    results: [
-      "Improved robustness in navigation pipelines",
-      "Early detection of sensor degradation",
-      "Enables adaptive filtering strategies (future integration with EKF)",
-      "Reduces reliance on fixed-noise assumptions",
-    ],
-  },
-  paper2: {
-    title:
-      "3D Reconstruction of Underwater Structures using Forward-Scan Sonar and Gaussian Splatting",
-    problemContext: {
-      title: "Problem context",
-      paragraphs: [
-        "Underwater inspection and reconstruction are critical for infrastructure monitoring (pipelines, hulls), deep-sea exploration, and archaeological surveys.",
-        "However: optical sensors fail in turbid and low-visibility environments; multi-beam sonars are expensive, hardware-intensive, and data-heavy.",
-      ],
-    },
-    challenge: {
-      title: "Challenge with forward-scan sonar",
-      paragraphs: [
-        "Forward-scan sonars are low-cost, sequential acquisition, and provide sparse range–intensity data.",
-        "But they suffer from severe elevation ambiguity, provide 2D arc-like measurements, and make 3D reconstruction ill-posed.",
-      ],
-    },
-    solution:
-      "A novel Gaussian Splatting-based reconstruction framework tailored for forward-scan sonar.",
-    methodology: [
-      {
-        title: "Acoustic modeling",
-        bullets: [
-          "Each sonar ping modeled as elevation-ambiguous arc",
-          "Encodes uncertainty directly into reconstruction",
-        ],
-      },
-      {
-        title: "Multi-view fusion",
-        bullets: [
-          "Multiple sonar passes combined",
-          "Resolves ambiguity through geometric consistency and cross-view alignment",
-        ],
-      },
-      {
-        title: "Gaussian representation",
-        bullets: [
-          "Scene represented as a set of 3D Gaussian primitives",
-          "Each primitive encodes position, covariance, and intensity",
-        ],
-      },
-      {
-        title: "Elevation-aware densification",
-        bullets: [
-          "Iterative refinement strategy",
-          "Adds Gaussians where ambiguity reduces",
-          "Uses multi-view constraints to improve accuracy",
-        ],
-      },
-    ],
-    validation: "Tested on simulated datasets and real-world sonar data.",
-    contributions: [
-      "First framework adapting Gaussian splatting to forward-scan sonar",
-      "Handles extreme sparsity and ambiguity",
-      "Enables low-cost 3D reconstruction pipelines",
-      "Produces physically consistent reconstructions",
-    ],
-    impact: [
-      "Democratizes underwater 3D reconstruction",
-      "Enables scalable inspection systems",
-      "Reduces dependency on expensive sonar systems",
-    ],
-  },
 };
 
 export type PaperSection = { id: string; title: string; paragraphs: string[] };
+export type PaperLink = { label: string; href: string };
 
 export type Paper = {
   slug: string;
   index: string;
   title: string;
+  authors: string;
+  venue: string;
+  /** e.g. "First author · presented" */
+  role?: string;
+  links: PaperLink[];
   summary: string;
   keywords: string[];
   sections: PaperSection[];
@@ -155,43 +38,157 @@ export type Paper = {
   outcomes: string[];
 };
 
-const { paper1, paper2 } = research;
-
-/** Both papers normalised to one shape so the cards and detail pages can share a layout. */
 export const papers: Paper[] = [
   {
     slug: "sensor-integrity-lstm",
     index: "01",
-    title: paper1.title,
-    summary: paper1.approach.intro,
-    keywords: ["LSTM", "EKF", "6-DOF simulation", "Fault detection"],
-    sections: [
-      { id: "problem", ...paper1.problemContext },
-      { id: "limitations", ...paper1.limitations },
-      { id: "approach", title: paper1.approach.title, paragraphs: [paper1.approach.intro] },
+    title: "Deep Learning Based Sensor Integrity Monitoring for Robust AUV Navigation",
+    authors: "Bokinala Samyak Kumar, Vallabh Deogaonkar, Mohammed Ibrahim M., Abhilash Somayajula",
+    venue: "OCEANS 2026 Sanya, China",
+    role: "First author · presented",
+    links: [
+      { label: "IEEE Xplore", href: "https://ieeexplore.ieee.org/document/11616826" },
+      { label: "Code", href: "https://github.com/Samyak-17-pixel/AUV_Navigation_OCEANS_2026" },
     ],
-    pipelineTitle: "Framework components",
-    pipeline: paper1.approach.components.map((c) => ({ title: c.name, bullets: c.bullets })),
-    contributions: paper1.contributions,
+    summary:
+      "A multi-head LSTM that labels the IMU, DVL and pressure sensor of an AUV as clean, degraded or faulty at every timestep, trained on a labelled dataset from a 6-DOF simulator with physically grounded disturbances.",
+    keywords: ["LSTM", "Fault detection", "6-DOF simulation", "IMU · DVL · pressure"],
+    sections: [
+      {
+        id: "problem",
+        title: "Problem",
+        paragraphs: [
+          "AUVs working in shallow, cluttered water navigate on a DVL, a pressure sensor and an IMU, and all three are disturbed by the environment. The DVL loses bottom lock over uneven terrain, the pressure sensor fluctuates with waves and bubbles, and the IMU drifts or picks up magnetic interference.",
+          "Some of these anomalies are short-term degradation and some are persistent faults. Telling the two apart in real time matters: treating a transient disturbance as a fault, or the reverse, leads to the wrong response and a worse mission.",
+        ],
+      },
+      {
+        id: "limitations",
+        title: "Why classical methods struggle",
+        paragraphs: [
+          "Model-based fault detection (analytical redundancy, residuals, observers with thresholds) needs an accurate model and hand-set thresholds. It catches abrupt faults well, but it looks at instantaneous deviations, so it struggles with gradual or short-lived degradation in water where disturbances are hard to model.",
+        ],
+      },
+      {
+        id: "approach",
+        title: "Approach",
+        paragraphs: [
+          "Detection is posed as a multi-sensor, per-timestep sequence classification problem. The model sees only the measured signals, never the true state, and predicts a class for each sensor at every step.",
+          "Training data comes from a nonlinear 6-DOF AUV simulator (Fossen form, RK4 at 10 Hz, sensors logged at 1 Hz) flying lawnmower survey missions with randomised ocean currents. Disturbances are injected per sensor: degradation as higher, signal-relative noise over a finite window (a magnetometer-style attitude bias for the IMU), and faults as frozen or NaN outputs that last until the end of the mission. At most one sensor faults per episode.",
+        ],
+      },
+    ],
+    pipelineTitle: "Framework",
+    pipeline: [
+      {
+        title: "Simulation and dataset",
+        bullets: [
+          "6-DOF dynamics, currents, mission controller and sensor models",
+          "20 scenario types: 8 degradation-only combinations and 12 with one faulty sensor",
+          "Episodes run through the fault, with per-timestep labels; 70 / 15 / 15 split stratified by scenario",
+        ],
+      },
+      {
+        title: "Multi-head LSTM",
+        bullets: [
+          "Shared LSTM backbone on a 20-D feature per timestep (IMU, DVL, pressure, beam flags, NaN flags)",
+          "Three heads (IMU, DVL, pressure), each predicting clean / degraded / fault",
+          "Weighted cross-entropy per head to counter class imbalance",
+        ],
+      },
+      {
+        title: "Scenario-level evaluation",
+        bullets: [
+          "Per-timestep predictions aggregated into one scenario per mission",
+          "Scenario confusion matrix over all 20 types",
+          "Compared with a residual-threshold model-based baseline",
+        ],
+      },
+    ],
+    contributions: [
+      "A physics-informed simulation framework that generates labelled multi-sensor datasets with realistic degradation and fault mechanisms",
+      "A multi-head LSTM that classifies each sensor as clean, degraded or faulty from sequential measurements",
+      "A scenario-level evaluation method that scores mission-relevant detection across combinations of anomalies",
+    ],
     outcomesTitle: "Results",
-    outcomes: paper1.results,
+    outcomes: [
+      "81.8% overall accuracy across all sensors",
+      "Faults (frozen or invalid output) are detected reliably; degradation is the hardest class",
+      "The scenario confusion matrix is strongly diagonal; errors concentrate among similar degradation-only scenarios",
+      "Limitations: simulation-only data, detection not yet fed into navigation, a short delay at degradation onset",
+    ],
   },
   {
     slug: "sonar-gaussian-splatting",
     index: "02",
-    title: paper2.title,
-    summary: paper2.solution,
-    keywords: ["Forward-scan sonar", "Gaussian splatting", "Multi-view fusion", "3D reconstruction"],
+    title: "3D Reconstruction of Underwater Structures using Forward-Scan Sonar and Gaussian Splatting",
+    authors: "Vallabh Deogaonkar, Mohammed Ibrahim M., Bokinala Samyak Kumar, Aatmaj Bhayani, Abhilash Somayajula",
+    venue: "OCEANS 2026 Sanya, China",
+    links: [{ label: "IEEE Xplore", href: "https://ieeexplore.ieee.org/document/11616818" }],
+    summary:
+      "A Gaussian splatting framework for low-cost forward-scan sonar: each ping is an elevation-ambiguous arc, and many views are combined to recover 3D structure.",
+    keywords: ["Forward-scan sonar", "Gaussian splatting", "Elevation ambiguity", "3D reconstruction"],
     sections: [
-      { id: "problem", ...paper2.problemContext },
-      { id: "challenge", ...paper2.challenge },
-      { id: "solution", title: "Proposed solution", paragraphs: [paper2.solution, paper2.validation] },
+      {
+        id: "problem",
+        title: "Problem",
+        paragraphs: [
+          "Inspecting pipelines, bridge piers and offshore platforms needs 3D models, but turbid, dark water defeats cameras. Multi-beam imaging sonars work, but they are expensive and produce dense data.",
+          "Forward-scan sonars are compact and cheap, but they acquire one beam at a time as sparse range–intensity data and do not resolve elevation. Every return could have come from anywhere along an arc, so 3D reconstruction is ill-posed. Existing sonar Gaussian splatting methods assume dense imaging sonar or extra sensors.",
+        ],
+      },
+      {
+        id: "solution",
+        title: "Approach",
+        paragraphs: [
+          "The scene is a set of 3D Gaussians, each with a mean, an anisotropic covariance, an opacity and a reflectivity. A sonar renderer moves them into the sensor frame, linearises the Cartesian-to-spherical map, splats them into range–azimuth pixels and accumulates them with transmittance. The Gaussians are then optimised so that rendered images match the measured ones across all viewpoints.",
+          "Data comes from a ray-based forward-scan sonar simulator, with poses sampled around each structure and pointed at its centroid. The method is validated on simulated fence and truss structures (249 and 886 viewpoints).",
+        ],
+      },
     ],
-    pipelineTitle: "Methodology",
-    pipeline: paper2.methodology,
-    contributions: paper2.contributions,
-    outcomesTitle: "Impact",
-    outcomes: paper2.impact,
+    pipelineTitle: "Method",
+    pipeline: [
+      {
+        title: "Elevation-aware initialisation",
+        bullets: [
+          "Each active sonar pixel becomes candidate points sampled along its elevation arc",
+          "Intensity thresholding, then multi-view consistency: keep points seen from at least M views",
+        ],
+      },
+      {
+        title: "Sonar splatting",
+        bullets: [
+          "World → sensor → (range, azimuth) with a first-order Jacobian for the covariance",
+          "Approximate per-Gaussian transmittance and view-dependent Gaussian subsets",
+        ],
+      },
+      {
+        title: "Regularised optimisation",
+        bullets: [
+          "ℓ1 image loss plus opacity and scale regularisation",
+          "Elevation-ray regularisation (entropy and depth variance along each ray) against vertical smearing",
+          "Opacity updates aligned with the reconstruction gradient",
+        ],
+      },
+      {
+        title: "Pruning",
+        bullets: [
+          "Density-based pruning of isolated Gaussians",
+          "A reconstruction-aware guard that protects Gaussians the loss depends on",
+        ],
+      },
+    ],
+    contributions: [
+      "Models each forward-scan return as an elevation-ambiguous arc instead of a point",
+      "Resolves elevation through multi-view consistency in initialisation and optimisation",
+      "Adds elevation-ray regularisation, opacity-gradient alignment and reconstruction-aware pruning for stable optimisation",
+    ],
+    outcomesTitle: "Results",
+    outcomes: [
+      "Fence structure: the three vertical rods and the cross-bar are recovered by epoch 100, with most spurious Gaussians pruned",
+      "Truss structure: 811,690 candidate points filtered to 174,637 Gaussians, which converge onto the truss members as spurious ones are pruned",
+      "Shows that low-cost forward-scan sonar can support 3D inspection",
+    ],
   },
 ];
 

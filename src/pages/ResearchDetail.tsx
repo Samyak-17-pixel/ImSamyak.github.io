@@ -56,7 +56,19 @@ export function ResearchDetail() {
         <div>
           <span className="eyebrow">Research paper {paper.index}</span>
           <SplitTitle as="h1" text={paper.title} className="paper-doc__title" immediate delay={0.2} />
+          <p className="paper-doc__authors">{paper.authors}</p>
+          <p className="paper-doc__venue">
+            {paper.venue}
+            {paper.role ? ` · ${paper.role}` : ""}
+          </p>
           <p className="paper-doc__summary">{paper.summary}</p>
+          <div className="paper-doc__links">
+            {paper.links.map((l) => (
+              <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="paper-doc__link" data-cursor="OPEN">
+                {l.label} ↗
+              </a>
+            ))}
+          </div>
           <div className="chip-row">
             {paper.keywords.map((k) => (
               <span key={k} className="chip">

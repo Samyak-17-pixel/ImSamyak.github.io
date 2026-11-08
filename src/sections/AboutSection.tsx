@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { about } from "@/content/about";
 import { home } from "@/content/home";
 import { SectionFrame } from "@/components/ui/SectionFrame";
@@ -87,28 +88,11 @@ export function AboutSection() {
         ))}
       </Reveal>
 
-      <Reveal className="two-col" stagger={0.12}>
-        <GlowCard className="card">
-          <span className="eyebrow">{about.careerVision.title}</span>
-          <p className="card__lead">{about.careerVision.lead}</p>
-          <ul className="check-list">
-            {about.careerVision.bullets.map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
-        </GlowCard>
-        <GlowCard className="card">
-          <span className="eyebrow">{about.futurePlans.title}</span>
-          <p className="card__lead">{about.futurePlans.target}</p>
-          <div className="chip-row">
-            {about.futurePlans.focus.map((f) => (
-              <span key={f} className="chip">
-                {f}
-              </span>
-            ))}
-          </div>
-        </GlowCard>
-      </Reveal>
+      <p className="about-next">
+        <Link to="/next" data-cursor="DIVE">
+          Where I want to go next →
+        </Link>
+      </p>
     </SectionFrame>
   );
 }

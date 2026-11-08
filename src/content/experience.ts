@@ -8,118 +8,128 @@ export type Role = {
 
 export const experience: Role[] = [
   {
-    title: "Autonomous Underwater Vehicle (AUV) Sensing & Control Engineer",
-    org: "Team Aritra — IIT Madras",
-    period: "Dec 2025 – Present",
+    title: "Undergraduate Researcher",
+    org: "MAVLAB, IIT Madras · Advisor: Prof. Abhilash Somayajula",
+    period: "2024 – Present",
     intro:
-      "Building TIMI, a research-grade, fully actuated AUV, focused on full autonomy in constrained underwater environments.",
+      "Research on underwater perception, navigation, docking and mapping, and the AUVs to test it on: MAKO and DHWANI.",
     sections: [
       {
-        heading: "Mission-critical autonomy",
+        heading: "Active search & docking (ongoing)",
         bullets: [
-          "Leading the development of mission-critical autonomy systems for navigation through structured environments, acoustic target detection, communication-based localization, and multi-stage mission execution.",
+          "Building search-and-docking for an underactuated torpedo AUV with no prior dock location: a belief over dock locations is updated from side-scan sonar, and viewpoints are chosen by information gain against travel cost.",
+          "Identifying the dock from an asymmetric light pattern, then homing with optimal control and camera-based visual servoing; benchmarking against coverage-based search in simulation before trials in a 30 × 30 × 3 m wave basin.",
         ],
       },
       {
-        heading: "Sensor-driven state estimation",
+        heading: "MAKO torpedo AUV",
         bullets: [
-          "Designed and implemented sensor-driven state estimation pipelines integrating IMU, pressure sensor, Doppler Velocity Log (DVL), echosounder, imaging sonar, acoustic modem, and underwater GPS.",
+          "Designed the CAD and PCB architecture of a 1.4 m X-fin torpedo AUV with IMU, DVL, depth sensor, dual side-scan sonars and a docking camera.",
+          "Developed dock-light detection, an EKF dock-pose estimator and a search–approach–enter state machine, plus lawnmower, orbit, spiral and depth-varying survey missions inside a virtual geofence.",
+          "Built an offline replica of the lab simulator's dynamics that found and fixed errors in its thrust, fin and added-mass models.",
         ],
       },
       {
-        heading: "Multi-sensor fusion",
+        heading: "DHWANI acoustic AUV",
         bullets: [
-          "Developed multi-sensor fusion frameworks for depth control, heading stabilization, and velocity regulation, ensuring stable operation without wall contact, floor collision, or mission structure interference.",
+          "Designed a compact, acoustics-focused AUV for bathymetry and SLAM research, with a slide-out electronics frame and separately switched power sections around a Jetson Orin Nano and a Pixhawk.",
+          "Integrated an echosounder, forward-scan, side-scan and imaging sonars, USBL, DVL, IMU and pressure sensor; implemented depth, roll and yaw control and ran pool tests logging vehicle motion with sonar data.",
         ],
       },
       {
-        heading: "Perception & decision-making",
+        heading: "Lab software & simulation",
         bullets: [
-          "Engineered perception and decision-making logic for gate detection, obstacle avoidance, and target localization using acoustic and sonar-based cues.",
+          "Designed ROS 2 software for synchronised multi-sensor acquisition, real-time visualisation and logging across the lab's AUVs.",
+          "Wrote a physics-based dual side-scan sonar simulator, embedded in the lab's docking simulator, and a fin design and optimisation platform for torpedo AUVs.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Summer Research Intern — Marine Heatwaves of the Bay of Bengal",
+    org: "Maritime Research Centre (MRC), Pune",
+    period: "Jun 2026 – Aug 2026",
+    intro: "Drivers, characteristics and predictability of marine heatwaves in three sub-regions of the Bay of Bengal.",
+    sections: [
+      {
+        heading: "Event catalogue",
+        bullets: [
+          "Built a pipeline on 20 years (2006–2025) of daily Copernicus satellite SST for three Bay of Bengal sub-regions, detecting 117 marine heatwaves with the Hobday et al. (2016) method.",
+        ],
+      },
+      {
+        heading: "Drivers",
+        bullets: [
+          "Linked every event to ENSO, IOD and MEI at 0–6-month lags and to local wind and heat-flux anomalies with chi-square, Kruskal–Wallis and lag-correlation tests: 81% occurred under weak winds, and the IOD was the strongest large-scale driver.",
+        ],
+      },
+      {
+        heading: "Forecasting",
+        bullets: [
+          "Built heatwave-onset forecasters (logistic regression, Random Forest, XGBoost) with SHAP attribution, reaching 0.40 F1 at a 14-day lead on 2022–2025 test data and flagging 13 of 13 onsets in the 2025 hindcast.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Team Captain and Autonomous Systems Lead",
+    org: "Team Aritra, IIT Madras",
+    period: "2025 – 2026",
+    intro: "Led the team building TIMI, a research-grade, fully actuated eight-thruster AUV.",
+    sections: [
+      {
+        heading: "Leadership & integration",
+        bullets: [
+          "Led the development and pool validation of TIMI, integrating DVL, IMU, imaging sonar, pressure sensor, stereo camera, acoustic communication and localisation systems.",
+        ],
+      },
+      {
+        heading: "6-DOF control",
+        bullets: [
+          "Developed the 6-DOF control stack in ROS 2 for 8 thrusters (cascaded position–velocity PID, attitude PD, pseudo-inverse thrust allocation) with station keeping, waypoint and spline path following.",
+        ],
+      },
+      {
+        heading: "Perception & missions",
+        bullets: [
+          "Built a sonar-based gate finder that clusters Ping360 returns and refines them with the camera, and a classical OpenCV gate detector with PnP pose estimation running as a ROS 2 node on the onboard Jetson.",
+          "Wrote the mission logic for the pool tasks: gate passing, drum detection and ball drop.",
         ],
       },
       {
         heading: "Custom actuation",
         bullets: [
-          "Designed and fabricated a custom actuation system: ball dropping and pickup mechanism, optimized for alignment tolerance, fast actuation, and high reliability in underwater conditions.",
+          "Designed autonomous mechanisms for target acquisition and reacquisition, including a ball pickup-and-drop mechanism built for alignment tolerance and fast, reliable actuation underwater.",
         ],
       },
     ],
   },
   {
-    title: "Robotics Systems Engineer (AUVs)",
-    org: "MAVLAB — IIT Madras",
-    period: "Aug 2025 – Present",
-    intro:
-      "Designed and developed a compact, modular Autonomous Underwater Vehicle (AUV) from scratch, owning electrical systems, mechanical architecture, and the autonomy stack.",
+    title: "Mechatronics Design Engineer",
+    org: "Team Amogh, IIT Madras",
+    period: "2024 – 2025",
+    intro: "Electrical and mechanical design of the team's AUV.",
     sections: [
       {
         heading: "Electrical architecture",
         bullets: [
-          "Architected the complete electrical system, including power distribution networks, sensor and thruster interfacing, grounding strategy for noise minimization, and internal wiring optimized for reliability in submerged conditions.",
-        ],
-      },
-      {
-        heading: "Bathymetric sensing suite",
-        bullets: [
-          "Integrated a heterogeneous bathymetric sensing suite: pressure sensor, DVL, echosounder, imaging sonar, side-scan sonar, forward-looking sonar, and IMU — with emphasis on sensor placement optimization, electrical interfacing, and time synchronization.",
-        ],
-      },
-      {
-        heading: "ROS data acquisition",
-        bullets: [
-          "Developed a ROS-based data acquisition pipeline with synchronized multi-sensor logging that enables repeatable and scalable experiments and supports downstream mapping and SLAM tasks.",
-        ],
-      },
-      {
-        heading: "EKF navigation",
-        bullets: [
-          "Implemented EKF-based navigation framework fusing IMU, DVL, and pressure sensor, providing stable state estimates for localization, depth estimation, and mapping.",
-        ],
-      },
-      {
-        heading: "Ongoing development",
-        bullets: [
-          "Currently developing a custom sonar visualization interface and interactive tools for acoustic data interpretation, bathymetric analysis, and multi-sensor validation.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Electrical & Mechanical Design Specialist",
-    org: "Team Amogh — IIT Madras",
-    period: "Mar 2025 – Nov 2025",
-    intro:
-      "Core contributor to AUV development for RoboSub 2026, focusing on system-level integration.",
-    sections: [
-      {
-        heading: "Electrical architecture",
-        bullets: [
-          "Designed the complete electrical architecture, including PCB design, power regulation systems, sensor-thruster interfacing, and grounding strategies for underwater safety.",
+          "Designed electrical architectures including power distribution, PCB systems, sensing interfaces and safety-critical subsystems.",
         ],
       },
       {
         heading: "PCB design (KiCad)",
+        bullets: ["Developed PCB schematics and layouts in KiCad for reliable underwater robotic operation."],
+      },
+      {
+        heading: "Mechanical layout (Fusion 360)",
         bullets: [
-          "Developed schematics and PCB layouts using KiCad: optimized component density, improved electrical reliability, and ensured efficient power routing.",
+          "Designed mechanical subsystems and internal vehicle layouts in Fusion 360, focusing on compact integration and maintainability.",
         ],
       },
       {
-        heading: "Hardware integration",
+        heading: "Integration",
         bullets: [
-          "Executed full hardware integration, including waterproofing, internal wiring, soldering, and assembly within pressure housings.",
-        ],
-      },
-      {
-        heading: "Mechanical & hydrodynamics",
-        bullets: [
-          "Contributed to mechanical design and hydrodynamics: thruster placement optimization, drag reduction strategies, and stability improvements.",
-        ],
-      },
-      {
-        heading: "CAD",
-        bullets: [
-          "Designed 3D models using Autodesk Fusion 360 for internal layout, structural integration, and component mounting.",
+          "Performed hardware integration, fabrication, waterproofing and full-system assembly.",
         ],
       },
     ],

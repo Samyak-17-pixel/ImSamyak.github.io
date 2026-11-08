@@ -6,45 +6,36 @@ export const about = {
   focus:
     "I focus on designing real-world deployable Autonomous Underwater Vehicles (AUVs) capable of operating in GPS-denied, uncertain, and dynamic underwater environments.",
   mavlab:
-    "Currently, I am a core member of MAVLAB (Marine Autonomous Vehicles Laboratory) under Prof. Abhilash Sharma, where I contribute to the development of next-generation underwater robotic systems with emphasis on:",
+    "Currently, I am an undergraduate researcher at MAVLAB (Marine Autonomous Vehicles Laboratory) under Prof. Abhilash Somayajula, where I contribute to the development of next-generation underwater robotic systems with emphasis on:",
   mavlabEmphasis: [
     "Robust navigation",
     "Sensor reliability",
     "Acoustic perception",
+    "Autonomous search & docking",
     "Real-time autonomy",
   ],
   belief:
     "I strongly believe that the future of ocean exploration and infrastructure monitoring will be driven by intelligent, low-cost, and scalable robotic systems, and my work is aligned toward building such technologies.",
   positions: [
     {
-      role: "Joint Secretary",
-      org: "Marine Technology Society (MTS), IIT Madras Student Chapter",
-    },
-    {
-      role: "Student Ambassador",
-      org: "Royal Institute of Naval Architects (RINA)",
+      role: "Undergraduate Researcher",
+      org: "MAVLAB, Department of Ocean Engineering, IIT Madras (2024 – Present)",
     },
     {
       role: "Team Captain — Team Aritra",
-      org: "TIMI research AUV, IIT Madras",
+      org: "TIMI research AUV, IIT Madras (2025 – 2026)",
     },
     {
-      role: "Research Member",
-      org: "MAVLAB, Department of Ocean Engineering, IIT Madras",
+      role: "Game Master, Aquavision AUV Competition",
+      org: "IEEE OES IIT Madras Student Chapter (2025 – Present)",
+    },
+    {
+      role: "Joint Secretary",
+      org: "Marine Technology Society (MTS) IIT Madras Student Section (2024 – 2025)",
+    },
+    {
+      role: "Student Ambassador",
+      org: "Royal Institution of Naval Architects (RINA) (2024 – 2025)",
     },
   ],
-  careerVision: {
-    title: "Career vision",
-    lead: "To build intelligent underwater robotic systems that can:",
-    bullets: [
-      "Operate autonomously in uncertain environments",
-      "Enable large-scale ocean exploration",
-      "Support infrastructure inspection and sustainability",
-    ],
-  },
-  futurePlans: {
-    title: "Future plans",
-    target: "Erasmus Mundus Joint Master’s in Marine and Maritime Intelligent Robotics (2027 intake)",
-    focus: ["Marine autonomy", "Intelligent robotics", "Advanced perception systems"],
-  },
 };

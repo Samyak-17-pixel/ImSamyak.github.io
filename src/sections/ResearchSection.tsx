@@ -40,6 +40,10 @@ export function ResearchSection() {
             </div>
             <div className="paper-card__body">
               <h3 className="paper-card__title">{p.title}</h3>
+              <p className="paper-card__venue">
+                {p.venue}
+                {p.role ? ` · ${p.role}` : ""}
+              </p>
               <p className="paper-card__summary">{p.summary}</p>
               <div className="chip-row">
                 {p.keywords.map((k) => (
