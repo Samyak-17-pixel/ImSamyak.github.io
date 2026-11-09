@@ -7,6 +7,7 @@ import { isDivePath, sectionPath, useGoToSection } from "@/lib/navigation";
 import { setPaletteOpen } from "@/lib/paletteStore";
 import { lockScroll } from "@/lib/smoothScroll";
 import { useActiveSection } from "@/lib/scrollStore";
+import { toggleTheme, useTheme } from "@/lib/theme";
 
 const links = SECTIONS.filter((s) => s.inNav);
 const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
@@ -18,6 +19,8 @@ export function Nav() {
   const go = useGoToSection();
   const [compact, setCompact] = useState(false);
   const [drawer, setDrawer] = useState(false);
+  const theme = useTheme();
+  const dark = theme === "dark";
 
   // Detail pages highlight their parent section.
   const current = onDive ? active : pathname.startsWith("/research") ? "research" : pathname.startsWith("/models") ? "models" : "";
@@ -71,6 +74,25 @@ export function Nav() {
         </nav>
 
         <div className="nav-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={dark}
+            title={dark ? "Light mode" : "Dark mode"}
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              {dark ? (
+                <>
+                  <circle cx="12" cy="12" r="4.2" />
+                  <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
+                </>
+              ) : (
+                <path d="M20.2 14.6A8.3 8.3 0 0 1 9.4 3.8a8.3 8.3 0 1 0 10.8 10.8Z" />
+              )}
+            </svg>
+          </button>
           <button type="button" className="nav-cmd" onClick={() => setPaletteOpen(true)} aria-label="Open quick jump">
             <span className="nav-cmd__label">Jump to</span>
             <kbd>{isMac ? "⌘" : "Ctrl"}</kbd>

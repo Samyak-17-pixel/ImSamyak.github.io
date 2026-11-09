@@ -1,6 +1,6 @@
 import { noise1 } from "@/components/hud/sensorMath";
 import { useSensorCanvas } from "./useSensorCanvas";
-import { AMBER, BIO, MONO, TEXT, rgba } from "./palette";
+import { AMBER, BIO, MONO, TEXT, rgba, PANEL, PANEL_HI } from "./palette";
 
 const BEAM_ANGLES = [-30, -12, 12, 30].map((d) => (d * Math.PI) / 180);
 
@@ -21,8 +21,8 @@ export function DvlBeams({ className }: { className?: string }) {
     ctx.lineTo(w, h);
     ctx.closePath();
     const sg = ctx.createLinearGradient(0, h * 0.6, 0, h);
-    sg.addColorStop(0, "rgba(12, 60, 66, 0.55)");
-    sg.addColorStop(1, "rgba(2, 12, 16, 0.2)");
+    sg.addColorStop(0, rgba(PANEL_HI, 0.55));
+    sg.addColorStop(1, rgba(PANEL, 0.2));
     ctx.fillStyle = sg;
     ctx.fill();
     ctx.strokeStyle = rgba(BIO, 0.45);
@@ -75,7 +75,7 @@ export function DvlBeams({ className }: { className?: string }) {
     ctx.save();
     ctx.translate(vx, vy);
     ctx.rotate(Math.sin(t * 0.8) * 0.02);
-    ctx.fillStyle = "rgba(10, 40, 48, 0.95)";
+    ctx.fillStyle = rgba(PANEL_HI, 0.95);
     ctx.strokeStyle = rgba(BIO, 0.85);
     ctx.lineWidth = 1.2;
     ctx.beginPath();

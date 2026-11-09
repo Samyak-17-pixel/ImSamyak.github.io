@@ -1,28 +1,82 @@
+/*
+ * Academic navy theme. Two palettes switched by <html data-theme="light|dark">.
+ * The legacy names (--biolume, --cyan, --amber, --abyss-*) are kept as aliases so the
+ * component CSS follows the theme without being rewritten.
+ */
+:root,
+:root[data-theme="light"] {
+  --bg: #f7f7f5;
+  --bg-rgb: 247, 247, 245;
+  --surface: #ffffff;
+  --surface-rgb: 255, 255, 255;
+  --text: #1a1d21;
+  --text-rgb: 26, 29, 33;
+  --muted: #535a68;
+  --dim: #7a808c;
+
+  --accent: #1f3a5f;
+  --accent-rgb: 31, 58, 95;
+  --accent-2: #3b6797;
+  --accent-2-rgb: 59, 103, 151;
+  --warm: #9a5b1e;
+  --warm-rgb: 154, 91, 30;
+  --on-accent: #ffffff;
+  --shadow-rgb: 30, 40, 60;
+  --hi-rgb: 255, 255, 255;
+
+  --abyss-0: #f7f7f5;
+  --abyss-1: #f1f1ee;
+  --abyss-2: #e9eae6;
+  --abyss-3: #dfe1dc;
+  --veil-top: rgba(247, 247, 245, 0.6);
+  --veil-mid: rgba(247, 247, 245, 0.86);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #121417;
+  --bg-rgb: 18, 20, 23;
+  --surface: #1a1d22;
+  --surface-rgb: 26, 29, 34;
+  --text: #e7e8ea;
+  --text-rgb: 231, 232, 234;
+  --muted: #a0a7b3;
+  --dim: #737a86;
+
+  --accent: #8fb3e0;
+  --accent-rgb: 143, 179, 224;
+  --accent-2: #a9c3e3;
+  --accent-2-rgb: 169, 195, 227;
+  --warm: #d6a46a;
+  --warm-rgb: 214, 164, 106;
+  --on-accent: #0f1a2a;
+  --shadow-rgb: 0, 0, 0;
+  --hi-rgb: 255, 255, 255;
+
+  --abyss-0: #121417;
+  --abyss-1: #15181c;
+  --abyss-2: #1a1d22;
+  --abyss-3: #22262c;
+  --veil-top: rgba(18, 20, 23, 0.45);
+  --veil-mid: rgba(18, 20, 23, 0.7);
+  color-scheme: dark;
+}
+
 :root {
-  /* Abyss palette */
-  --abyss-0: #010a0e;
-  --abyss-1: #03141a;
-  --abyss-2: #062129;
-  --abyss-3: #0a3039;
-  --glass: rgba(4, 26, 32, 0.52);
-  --glass-strong: rgba(3, 18, 24, 0.86);
-  --line: rgba(94, 242, 214, 0.13);
-  --line-strong: rgba(94, 242, 214, 0.32);
+  /* Legacy aliases */
+  --biolume: var(--accent);
+  --biolume-rgb: var(--accent-rgb);
+  --cyan: var(--accent-2);
+  --cyan-rgb: var(--accent-2-rgb);
+  --amber: var(--warm);
+  --amber-rgb: var(--warm-rgb);
+  --glass: rgba(var(--surface-rgb), 0.78);
+  --glass-strong: rgba(var(--surface-rgb), 0.94);
+  --line: rgba(var(--text-rgb), 0.1);
+  --line-strong: rgba(var(--text-rgb), 0.2);
 
-  /* Bioluminescent accents */
-  --biolume: #5ef2d6;
-  --biolume-rgb: 94, 242, 214;
-  --cyan: #36c9ff;
-  --cyan-rgb: 54, 201, 255;
-  --amber: #ffb547;
-  --amber-rgb: 255, 181, 71;
-
-  --text: #e3f7f4;
-  --muted: #8fb5b3;
-  --dim: #5a8081;
-
-  --font: "DM Sans", system-ui, sans-serif;
-  --font-display: "Unbounded", "DM Sans", system-ui, sans-serif;
+  --font: "Inter", system-ui, sans-serif;
+  --font-display: "Source Serif 4", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
 
   --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
@@ -32,8 +86,8 @@
   --step-3: clamp(1.8rem, 1.4rem + 1.8vw, 2.8rem);
   --step-xl: clamp(2.6rem, 1.6rem + 5vw, 6.2rem);
 
-  --radius: 18px;
-  --radius-sm: 10px;
+  --radius: 10px;
+  --radius-sm: 6px;
   --nav-h: 64px;
   --gutter: clamp(16px, 5vw, 64px);
   --content: 1080px;

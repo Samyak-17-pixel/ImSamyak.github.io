@@ -1,5 +1,4 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Sparkles } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import type { MutableRefObject } from "react";
 import * as THREE from "three";
@@ -7,16 +6,17 @@ import { MAX_DEPTH_M } from "@/content/sections";
 import { byTier, env, maxDpr } from "@/lib/quality";
 import { getScrollState, onScrollFrame } from "@/lib/scrollStore";
 import { useBackgroundPaused } from "@/lib/sceneControl";
+import { useTheme } from "@/lib/theme";
 import { UnderwaterBackdrop } from "./UnderwaterBackdrop";
 import { RisingBubbles } from "./RisingBubbles";
 import { MarineParticles } from "./MarineParticles";
 import { KelpStrands } from "./KelpStrands";
-import { Bioluminescence } from "./Bioluminescence";
 import { useSmoothedPointer } from "./useSmoothedPointer";
 
-const BG = "#010a0e";
-const SURFACE_FOG = new THREE.Color("#04303a");
-const ABYSS_FOG = new THREE.Color("#010508");
+const PALETTE = {
+  dark: { bg: "#121417", surface: new THREE.Color("#1d2633"), abyss: new THREE.Color("#0e1014") },
+  light: { bg: "#eef0f2", surface: new THREE.Color("#f0f2f4"), abyss: new THREE.Color("#e6e9ed") },
+};
 
 const shaftVertex = /* glsl */ `
 varying vec2 vUv;
@@ -56,7 +56,7 @@ function LightShafts({
             vertexShader: shaftVertex,
             fragmentShader: shaftFragment,
             uniforms: {
-              uColor: { value: new THREE.Color(i % 2 ? "#a7f3e4" : "#7fe3ff") },
+              uColor: { value: new THREE.Color(i % 2 ? "#c9d6e6" : "#b4c6dc") },
               uOpacity: { value: 0.1 },
               uTime: { value: 0 },
             },
@@ -112,7 +112,16 @@ function SceneContent() {
   const pointer = useSmoothedPointer(0.075);
   const depthRef = useRef(0);
   const velocityRef = useRef(0);
-  const { scene, camera } = useThree();
+  const { scene, camera, gl, invalidate } = useThree();
+  const theme = useTheme();
+  const light = theme === "light";
+  const pal = PALETTE[theme];
+
+  useEffect(() => {
+    gl.setClearColor(pal.bg, 1);
+    scene.background = new THREE.Color(pal.bg);
+    invalidate();
+  }, [gl, scene, pal, invalidate]);
 
   useFrame((_, delta) => {
     pointer.tick(delta);
@@ -123,7 +132,7 @@ function SceneContent() {
 
     const fog = scene.fog as THREE.Fog | null;
     if (fog) {
-      fog.color.copy(SURFACE_FOG).lerp(ABYSS_FOG, Math.min(1, depthRef.current * 1.6));
+      fog.color.copy(pal.surface).lerp(pal.abyss, Math.min(1, depthRef.current * 1.6));
       fog.far = THREE.MathUtils.lerp(55, 30, depthRef.current);
     }
     // Gentle camera parallax with the pointer
@@ -136,22 +145,21 @@ function SceneContent() {
 
   return (
     <>
-      <color attach="background" args={[BG]} />
-      <fog attach="fog" args={["#04303a", 10, 55]} />
+      <fog attach="fog" args={[PALETTE.dark.surface, 10, 55]} />
 
-      <hemisphereLight args={["#7fe3ff", "#02161c", 0.4]} />
-      <ambientLight intensity={0.2} color="#cdeffa" />
+      <hemisphereLight args={["#b4c6dc", "#14181e", 0.4]} />
+      <ambientLight intensity={0.2} color="#e3e8ef" />
 
-      <UnderwaterBackdrop mouseRef={mouseRef} depthRef={depthRef} />
-      <OceanFloor depthRef={depthRef} />
-      <LightShafts mouseRef={mouseRef} depthRef={depthRef} />
-
-      <MarineParticles count={byTier(4200)} mouseRef={mouseRef} velocityRef={velocityRef} />
-      <RisingBubbles count={byTier(90)} mouseRef={mouseRef} depthRef={depthRef} />
-      <Bioluminescence count={byTier(700)} depthRef={depthRef} velocityRef={velocityRef} />
+      <UnderwaterBackdrop mouseRef={mouseRef} depthRef={depthRef} light={light} />
+      {light ? null : (
+        <>
+          <OceanFloor depthRef={depthRef} />
+          <LightShafts mouseRef={mouseRef} depthRef={depthRef} />
+          <MarineParticles count={byTier(2400)} mouseRef={mouseRef} velocityRef={velocityRef} />
+          <RisingBubbles count={byTier(60)} mouseRef={mouseRef} depthRef={depthRef} />
+        </>
+      )}
       <KelpStrands mouseRef={mouseRef} depthRef={depthRef} />
-
-      <Sparkles count={byTier(110)} scale={[26, 16, 18]} size={1.4} speed={0.2} opacity={0.28} color="#7fe3ff" />
     </>
   );
 }
@@ -173,7 +181,6 @@ export function MarineScene({ className }: { className?: string }) {
         frameloop={frameloop}
         gl={{ antialias: env.tier === "high", alpha: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0.15, 14], fov: 46 }}
-        onCreated={({ gl }) => gl.setClearColor(BG, 1)}
       >
         <Suspense fallback={null}>
           <SceneContent />

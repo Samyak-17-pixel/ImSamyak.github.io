@@ -1,7 +1,7 @@
 import { getScrollState } from "@/lib/scrollStore";
 import { MAX_DEPTH_M, SECTIONS } from "@/content/sections";
 import { useSensorCanvas } from "./useSensorCanvas";
-import { AMBER, BIO, MONO, TEXT, rgba } from "./palette";
+import { AMBER, BIO, MONO, TEXT, rgba, PANEL, PANEL_HI } from "./palette";
 
 /** Depth sensor: a horizontal water column 0 → 1000 m with zone bands and the live vehicle depth. */
 export function DepthColumn({ className }: { className?: string }) {
@@ -14,9 +14,9 @@ export function DepthColumn({ className }: { className?: string }) {
     const x = (d: number) => pad + (d / MAX_DEPTH_M) * (w - pad * 2);
 
     const grad = ctx.createLinearGradient(pad, 0, w - pad, 0);
-    grad.addColorStop(0, "rgba(20, 140, 150, 0.55)");
-    grad.addColorStop(0.2, "rgba(10, 80, 95, 0.5)");
-    grad.addColorStop(1, "rgba(2, 12, 18, 0.9)");
+    grad.addColorStop(0, rgba(PANEL_HI, 0.75));
+    grad.addColorStop(0.2, rgba(PANEL_HI, 0.5));
+    grad.addColorStop(1, rgba(PANEL, 0.9));
     ctx.fillStyle = grad;
     ctx.fillRect(pad, y0, w - pad * 2, barH);
 

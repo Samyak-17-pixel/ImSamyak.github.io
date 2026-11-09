@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { hash } from "@/components/hud/sensorMath";
 import { useSensorCanvas } from "./useSensorCanvas";
-import { AMBER, BIO, CYAN, MONO, TEXT, rgba } from "./palette";
+import { AMBER, BIO, CYAN, MONO, TEXT, rgba, PANEL } from "./palette";
 
 const SPAN = (90 * Math.PI) / 180;
 const PING_HZ = 2.2;
@@ -52,7 +52,7 @@ export function FlsArc({ className }: { className?: string }) {
     }
 
     // Fan
-    ctx.fillStyle = "rgba(4, 30, 38, 0.35)";
+    ctx.fillStyle = rgba(PANEL, 0.35);
     ctx.beginPath();
     ctx.moveTo(ox, oy);
     ctx.arc(ox, oy, R, a0, a0 + SPAN);

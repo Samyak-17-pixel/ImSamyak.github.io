@@ -57,7 +57,7 @@ export function MarineParticles({ count, mouseRef, velocityRef }: Props) {
       </bufferGeometry>
       <pointsMaterial
         size={0.026}
-        color="#a7f3e4"
+        color="#c3cfdd"
         transparent
         opacity={0.38}
         sizeAttenuation

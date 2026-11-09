@@ -57,8 +57,8 @@ export function KelpStrands({ mouseRef, depthRef }: Props) {
         <mesh key={i} position={[0, -1.5, 0]}>
           <tubeGeometry args={[p.curve, 28, p.radius, 6, false]} />
           <meshStandardMaterial
-            color="#0d3b3a"
-            emissive="#06302b"
+            color="#2a3442"
+            emissive="#10161e"
             emissiveIntensity={0.35}
             metalness={0.2}
             roughness={0.88}

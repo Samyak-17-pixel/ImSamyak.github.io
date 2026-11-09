@@ -1,5 +1,5 @@
 import { useSensorCanvas } from "./useSensorCanvas";
-import { AMBER, BIO, CYAN, MONO, rgba } from "./palette";
+import { AMBER, BIO, CYAN, MONO, TEXT, rgba } from "./palette";
 
 /** IIT Madras — where the fix resolves. */
 const LAT = 12.9915;
@@ -90,11 +90,11 @@ export function UsblFix({ className }: { className?: string }) {
     const ax = bx + 150 > w ? rx - size - 16 : bx;
     ctx.fillStyle = rgba(locked ? BIO : AMBER, 0.95);
     ctx.fillText(locked ? "USBL ▪ FIX LOCKED" : "USBL ▪ ACQUIRING…", ax, by);
-    ctx.fillStyle = rgba("214, 245, 240", 0.75);
+    ctx.fillStyle = rgba(TEXT, 0.75);
     ctx.fillText(`${lat}  ${lon}`, ax, by + 17);
     const brg = (47.3 + (1 - ease) * Math.sin(t * 3) * 40).toFixed(1).padStart(5, "0");
     const rng = (12.4 + (1 - ease) * Math.cos(t * 2) * 6).toFixed(1);
-    ctx.fillStyle = rgba("214, 245, 240", 0.45);
+    ctx.fillStyle = rgba(TEXT, 0.5);
     ctx.fillText(`BRG ${brg}°  RNG ${rng} m`, ax, by + 34);
   });
 

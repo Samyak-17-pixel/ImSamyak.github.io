@@ -78,7 +78,7 @@ export function RisingBubbles({ count, mouseRef, depthRef }: Props) {
       <sphereGeometry args={[1, 10, 10]} />
       <meshBasicMaterial
         ref={mat}
-        color="#c9fbf1"
+        color="#d8e0ea"
         transparent
         opacity={0.46}
         depthWrite={false}

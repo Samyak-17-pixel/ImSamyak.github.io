@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { pointer } from "@/lib/pointer";
 import { getScrollState } from "@/lib/scrollStore";
 import { useSensorCanvas } from "./useSensorCanvas";
-import { AMBER, BIO, MONO, TEXT, rgba } from "./palette";
+import { AMBER, BIO, MONO, TEXT, rgba, PANEL, PANEL_HI } from "./palette";
 
 /** IMU attitude indicator: roll/pitch follow the pointer and scroll velocity; heading tape below. */
 export function ImuAttitude({ className }: { className?: string }) {
@@ -35,13 +35,13 @@ export function ImuAttitude({ className }: { className?: string }) {
     ctx.rotate(-roll);
     ctx.translate(0, a.pitch * pxPerDeg);
     const sky = ctx.createLinearGradient(0, -R * 2, 0, 0);
-    sky.addColorStop(0, "rgba(6, 60, 72, 0.9)");
-    sky.addColorStop(1, "rgba(14, 110, 120, 0.75)");
+    sky.addColorStop(0, rgba(PANEL_HI, 0.9));
+    sky.addColorStop(1, rgba(PANEL_HI, 0.6));
     ctx.fillStyle = sky;
     ctx.fillRect(-R * 2, -R * 3, R * 4, R * 3);
     const sea = ctx.createLinearGradient(0, 0, 0, R * 2);
-    sea.addColorStop(0, "rgba(3, 30, 38, 0.95)");
-    sea.addColorStop(1, "rgba(1, 10, 14, 1)");
+    sea.addColorStop(0, rgba(PANEL, 0.95));
+    sea.addColorStop(1, rgba(PANEL, 1));
     ctx.fillStyle = sea;
     ctx.fillRect(-R * 2, 0, R * 4, R * 3);
     ctx.strokeStyle = rgba(BIO, 0.95);
@@ -114,7 +114,7 @@ export function ImuAttitude({ className }: { className?: string }) {
     ctx.beginPath();
     ctx.rect(8, ty, w - 16, tapeH - 8);
     ctx.clip();
-    ctx.fillStyle = "rgba(2, 16, 22, 0.7)";
+    ctx.fillStyle = rgba(PANEL, 0.7);
     ctx.fillRect(8, ty, w - 16, tapeH - 8);
     const pxPerHdg = 4;
     ctx.strokeStyle = rgba(TEXT, 0.45);

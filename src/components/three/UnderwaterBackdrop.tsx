@@ -16,6 +16,7 @@ uniform float uTime;
 uniform vec2 uMouse;
 uniform float uFlow;
 uniform float uDepth;
+uniform float uLight;
 varying vec2 vUv;
 
 float hash(vec2 p) {
@@ -99,6 +100,14 @@ void main() {
   float scan = sin(uv.x * 40.0 + uv.y * 12.0 + uTime * 1.8 + m.x * 8.0) * 0.5 + 0.5;
   col += vec3(0.02, 0.14, 0.13) * smoothstep(0.85, 1.0, scan) * 0.12;
 
+  // Academic theme: desaturate toward a calm blue-grey (dark) or a pale paper-blue (light).
+  float lum = dot(col, vec3(0.3, 0.59, 0.11));
+  vec3 darkCol = mix(col, vec3(lum) * vec3(0.9, 0.97, 1.12), 0.65);
+  vec3 lightCol = mix(vec3(0.9, 0.92, 0.94), vec3(0.97, 0.97, 0.965), smoothstep(0.0, 1.0, uv.y));
+  lightCol -= vec3(0.05, 0.035, 0.02) * caust * smoothstep(0.2, 1.0, uv.y);
+  lightCol -= vec3(0.02) * murk;
+  col = mix(darkCol, lightCol, uLight);
+
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -107,9 +116,10 @@ type Props = {
   mouseRef: MutableRefObject<THREE.Vector2>;
   depthRef: MutableRefObject<number>;
   flowScale?: number;
+  light?: boolean;
 };
 
-export function UnderwaterBackdrop({ mouseRef, depthRef, flowScale = 1 }: Props) {
+export function UnderwaterBackdrop({ mouseRef, depthRef, flowScale = 1, light = false }: Props) {
   const mat = useRef<THREE.ShaderMaterial>(null);
 
   const uniforms = useMemo(
@@ -118,7 +128,9 @@ export function UnderwaterBackdrop({ mouseRef, depthRef, flowScale = 1 }: Props)
       uMouse: { value: new THREE.Vector2(0, 0) },
       uFlow: { value: flowScale },
       uDepth: { value: 0 },
+      uLight: { value: light ? 1 : 0 },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [flowScale]
   );
 
@@ -127,6 +139,7 @@ export function UnderwaterBackdrop({ mouseRef, depthRef, flowScale = 1 }: Props)
     mat.current.uniforms.uTime.value = state.clock.elapsedTime;
     mat.current.uniforms.uMouse.value.copy(mouseRef.current);
     mat.current.uniforms.uDepth.value = depthRef.current;
+    mat.current.uniforms.uLight.value = light ? 1 : 0;
   });
 
   return (
